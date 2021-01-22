@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # TODO: Ovde treba ubaciti invoices_app
-
+    'invoices_app.apps.InvoicesAppConfig'
 ]
 
 MIDDLEWARE = [
