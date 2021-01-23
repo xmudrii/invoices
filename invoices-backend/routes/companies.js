@@ -66,7 +66,7 @@ route.post('/', (req, res) => {
             req.body.tax_number,
             req.body.national_id,
             req.body.email,
-            req.body.city_id,
+            req.body.city_id
         ]);
 
         db.query(formatted, (err, response) => {

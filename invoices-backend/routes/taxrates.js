@@ -56,7 +56,7 @@ route.post('/', (req, res) => {
         let query = "insert into sys_tax_rate (name, value) values (?, ?);";
         let formatted = mysql.format(query, [
             req.body.name,
-            req.body.value,
+            req.body.value
         ]);
 
         db.query(formatted, (err, response) => {
@@ -93,7 +93,7 @@ route.put('/:id', (req, res) => {
         let formatted = mysql.format(query, [
             req.body.name,
             req.body.value,
-            req.params.id,
+            req.params.id
         ]);
 
         db.query(formatted, (err, response) => {

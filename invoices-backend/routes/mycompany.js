@@ -61,7 +61,7 @@ route.post('/', (req, res) => {
                         req.body.national_id,
                         req.body.email,
                         req.body.payment_account,
-                        req.body.city_id,
+                        req.body.city_id
                     ]);
 
                     db.query(formatted, (err, response) => {
@@ -105,7 +105,7 @@ route.put('/', (req, res) => {
             req.body.national_id,
             req.body.email,
             req.body.payment_account,
-            req.body.city_id,
+            req.body.city_id
         ]);
 
         db.query(formatted, (err, response) => {

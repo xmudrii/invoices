@@ -66,7 +66,7 @@ route.post('/', (req, res) => {
             req.body.date_from,
             req.body.date_to,
             req.body.company_id,
-            req.body.remarks,
+            req.body.remarks
         ]);
 
         db.query(formatted, (err, response) => {

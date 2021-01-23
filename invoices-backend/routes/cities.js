@@ -58,7 +58,7 @@ route.post('/', (req, res) => {
         let formatted = mysql.format(query, [
             req.body.post_code,
             req.body.city,
-            req.body.country,
+            req.body.country
         ]);
 
         db.query(formatted, (err, response) => {
