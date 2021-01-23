@@ -3,27 +3,28 @@ const Joi = require('joi');
 const mysql = require('mysql');
 const db = require('../db');
 
-const invoiceitems = require('./invoiceitems')
-
 // Instanciranje rutera
 const route = express.Router();
 
 // Sema za validaciju
 const sema = Joi.object().keys({
-    number: Joi.string().trim().min(5).max(5).required(),
-    date: Joi.string().optional().allow(''),
-    date_from: Joi.string().optional().allow(''),
-    date_to: Joi.string().optional().allow(''),
-    company_id: Joi.number().precision(0).required(),
-    remarks: Joi.string().optional().allow(''),
+    invoice_id: Joi.number().precision(0).required(),
+    description: Joi.string().trim().required(),
+    unit: Joi.string().trim().max(4).required(),
+    count: Joi.number().precision(3).required(),
+    price: Joi.number().precision(2).required(),
+    tax_rate_id: Joi.number().precision(0).required(),
 });
 
 // Koristi JSON Middleware za parsiranje requestova
 route.use(express.json());
 
-// Lista svih racuna
-route.get('/', (req, res) => {
-    db.query('select * from invoice', (err, rows) => {
+// Lista svih stavki za racun
+route.get('/:invoice/items', (req, res) => {
+    let query = 'select * from invoice_item where invoice_id=?;';
+    let formatted = mysql.format(query, [req.params.invoice]);
+
+    db.query(formatted, (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -32,24 +33,8 @@ route.get('/', (req, res) => {
     });
 });
 
-// Prikaz pojedinacnog racuna
-route.get('/:id', (req, res) => {
-    let query = 'select * from invoice where id=?;';
-    let formatted = mysql.format(query, [req.params.id]);
-
-    db.query(formatted, (err, rows) => {
-        if (err)
-            // Greska servera
-            res.status(500).send(err.sqlMessage);
-        else if (rows.length === 0)
-            res.status(404).send('invoice not found');
-        else
-            res.send(rows[0]);
-    });
-});
-
-// Kreiranje novog recuna
-route.post('/', (req, res) => {
+// Kreiranje nove stavke za racun
+route.post('/:invoice/items', (req, res) => {
     // Validacija unosa
     // Object decomposition - dohvatanje error-a
     let { error } = Joi.validate(req.body, sema);
@@ -59,17 +44,14 @@ route.post('/', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let created_at = new Date();
-        let query = "insert into invoice (number, date, date_from, date_to, company_id, remarks, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        let query = "insert into invoice_item (invoice_id, description, unit, count, price, tax_rate_id) values (?, ?, ?, ?, ?, ?);";
         let formatted = mysql.format(query, [
-            req.body.number,
-            req.body.date,
-            req.body.date_from,
-            req.body.date_to,
-            req.body.company_id,
-            req.body.remarks,
-            created_at,
-            created_at,
+            req.params.invoice,
+            req.body.description,
+            req.body.unit,
+            req.body.count,
+            req.body.price,
+            req.body.tax_rate_id
         ]);
 
         db.query(formatted, (err, response) => {
@@ -77,7 +59,7 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoice where id=?;'
+                query = 'select * from invoice_item where id=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -91,8 +73,24 @@ route.post('/', (req, res) => {
     }
 });
 
-// Azuriranje racuna
-route.put('/:id', (req, res) => {
+// Pojedinacna stavka
+route.get('/item/:id', (req, res) => {
+    let query = 'select * from invoice_item where id=?;';
+    let formatted = mysql.format(query, [req.params.id]);
+
+    db.query(formatted, (err, rows) => {
+        if (err)
+            // Greska servera
+            res.status(500).send(err.sqlMessage);
+        else if (rows.length === 0)
+            res.status(404).send('invoice item not found');
+        else
+            res.send(rows[0]);
+    });
+});
+
+// Azuriranje stavke
+route.put('/item/:id', (req, res) => {
     // Validacija unosa
     // Object decomposition - dohvatanje unosa
     let { error } = Joi.validate(req.body, sema);
@@ -102,14 +100,13 @@ route.put('/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "update invoice set number=?, date=?, date_from=?, date_to=?, company_id=?, remarks=? where id=?;";
+        let query = "update invoice_item set description=?, unit=?, count=?, price=?, tax_rate_id=? where id=?;";
         let formatted = mysql.format(query, [
-            req.body.number,
-            req.body.date,
-            req.body.date_from,
-            req.body.date_to,
-            req.body.company_id,
-            req.body.remarks,
+            req.body.description,
+            req.body.unit,
+            req.body.count,
+            req.body.price,
+            req.body.tax_rate_id,
             req.params.id
         ]);
 
@@ -118,7 +115,7 @@ route.put('/:id', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoice where id=?;'
+                query = 'select * from invoice_item where id=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -132,9 +129,9 @@ route.put('/:id', (req, res) => {
     }
 });
 
-// Brisanje racuna
-route.delete('/:id', (req, res) => {
-    let query = 'select * from invoice where id=?;';
+// Brisanje stavke
+route.delete('/item/:id', (req, res) => {
+    let query = 'select * from invoice_item where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -142,11 +139,11 @@ route.delete('/:id', (req, res) => {
             // Greska servera
             res.status(500).send(err.sqlMessage);
         else if (rows.length === 0)
-            res.status(404).send("invoice not found");
+            res.status(404).send("invoice item not found");
         else {
             let city = rows[0];
 
-            let query = 'delete from invoice where id=?';
+            let query = 'delete from invoice_item where id=?';
             let formatted = mysql.format(query, [req.params.id]);
 
             db.query(formatted, (err, rows) => {
@@ -158,7 +155,5 @@ route.delete('/:id', (req, res) => {
         }
     });
 });
-
-route.use('/', invoiceitems);
 
 module.exports = route;
