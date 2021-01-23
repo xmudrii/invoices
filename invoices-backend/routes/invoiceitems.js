@@ -1,7 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
-const db = require('../db');
+const db = require('../database/connect');
 
 // Instanciranje rutera
 const route = express.Router();

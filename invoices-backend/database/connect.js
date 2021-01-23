@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const settings = require('./settings.json');
+const settings = require('../settings.json');
 let pool;
 
 function connectDatabase() {
