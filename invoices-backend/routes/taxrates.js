@@ -17,7 +17,7 @@ route.use(express.json());
 
 // Lista svih poreskih stopa
 route.get('/', (req, res) => {
-    db.query('select * from invoices_app_taxrate', (err, rows) => {
+    db.query('select * from sys_tax_rate', (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -28,7 +28,7 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacke poreske stope
 route.get('/:id', (req, res) => {
-    let query = 'select * from invoices_app_taxrate where id=?;';
+    let query = 'select * from sys_tax_rate where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -53,7 +53,7 @@ route.post('/', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "insert into invoices_app_taxrate (name, value) values (?, ?);";
+        let query = "insert into sys_tax_rate (name, value) values (?, ?);";
         let formatted = mysql.format(query, [
             req.body.name,
             req.body.value,
@@ -64,7 +64,7 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_taxrate where id=?;'
+                query = 'select * from sys_tax_rate where id=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -89,7 +89,7 @@ route.put('/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "update invoices_app_taxrate set name=?, value=? where id=?;";
+        let query = "update sys_tax_rate set name=?, value=? where id=?;";
         let formatted = mysql.format(query, [
             req.body.name,
             req.body.value,
@@ -101,7 +101,7 @@ route.put('/:id', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_taxrate where id=?;'
+                query = 'select * from sys_tax_rate where id=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -117,7 +117,7 @@ route.put('/:id', (req, res) => {
 
 // Brisanje poreske stope
 route.delete('/:id', (req, res) => {
-    let query = 'select * from invoices_app_taxrate where id=?;';
+    let query = 'select * from sys_tax_rate where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -129,7 +129,7 @@ route.delete('/:id', (req, res) => {
         else {
             let city = rows[0];
 
-            let query = 'delete from invoices_app_taxrate where id=?';
+            let query = 'delete from sys_tax_rate where id=?';
             let formatted = mysql.format(query, [req.params.id]);
 
             db.query(formatted, (err, rows) => {

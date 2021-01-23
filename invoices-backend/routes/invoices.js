@@ -21,7 +21,7 @@ route.use(express.json());
 
 // Lista svih racuna
 route.get('/', (req, res) => {
-    db.query('select * from invoices_app_invoice', (err, rows) => {
+    db.query('select * from invoice', (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -32,7 +32,7 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog racuna
 route.get('/:id', (req, res) => {
-    let query = 'select * from invoices_app_invoice where id=?;';
+    let query = 'select * from invoice where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -58,7 +58,7 @@ route.post('/', (req, res) => {
     else {
         // SQL query
         let created_at = new Date();
-        let query = "insert into invoices_app_invoice (number, date, date_from, date_to, company_id, remarks, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        let query = "insert into invoice (number, date, date_from, date_to, company_id, remarks, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.date,
@@ -75,7 +75,7 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_invoice where id=?;'
+                query = 'select * from invoice where id=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -100,7 +100,7 @@ route.put('/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "update invoices_app_invoice set number=?, date=?, date_from=?, date_to=?, company_id=?, remarks=? where id=?;";
+        let query = "update invoice set number=?, date=?, date_from=?, date_to=?, company_id=?, remarks=? where id=?;";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.date,
@@ -116,7 +116,7 @@ route.put('/:id', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_invoice where id=?;'
+                query = 'select * from invoice where id=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -132,7 +132,7 @@ route.put('/:id', (req, res) => {
 
 // Brisanje racuna
 route.delete('/:id', (req, res) => {
-    let query = 'select * from invoices_app_invoice where id=?;';
+    let query = 'select * from invoice where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -144,7 +144,7 @@ route.delete('/:id', (req, res) => {
         else {
             let city = rows[0];
 
-            let query = 'delete from invoices_app_invoice where id=?';
+            let query = 'delete from invoice where id=?';
             let formatted = mysql.format(query, [req.params.id]);
 
             db.query(formatted, (err, rows) => {

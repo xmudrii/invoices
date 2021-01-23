@@ -22,7 +22,7 @@ route.use(express.json());
 
 // Informacije o mojoj kompaniji
 route.get('/', (req, res) => {
-    db.query('select * from invoices_app_mycompany', (err, rows) => {
+    db.query('select * from sys_company', (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -44,7 +44,7 @@ route.post('/', (req, res) => {
         // Vrati gresku zahteva
         res.status(400).send(error.details[0].message);
     else {
-        let countQuery = "select count(*) as cnt from invoices_app_mycompany;"
+        let countQuery = "select count(*) as cnt from sys_company;"
         db.query(countQuery, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
@@ -53,7 +53,7 @@ route.post('/', (req, res) => {
                     res.status(403).send("only one company can exist");
                 else {
                     // SQL query
-                    let query = "insert into invoices_app_mycompany (name, address, tax_number, national_id, email, payment_account, city_id, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+                    let query = "insert into sys_company (name, address, tax_number, national_id, email, payment_account, city_id, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
                     let formatted = mysql.format(query, [
                         req.body.name,
                         req.body.address,
@@ -70,7 +70,7 @@ route.post('/', (req, res) => {
                             res.status(500).send(err.sqlMessage);
                         else {
                             // Ako nema greske, vracamo kreirani objekat
-                            query = 'select * from invoices_app_mycompany where id=?;'
+                            query = 'select * from sys_company where id=?;'
                             formatted = mysql.format(query, [response.insertId]);
 
                             db.query(formatted, (err, rows) => {
@@ -98,7 +98,7 @@ route.put('/', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "update invoices_app_mycompany set name=?, address=?, tax_number=?, national_id=?, email=?, payment_account=?;";
+        let query = "update sys_company set name=?, address=?, tax_number=?, national_id=?, email=?, payment_account=?;";
         let formatted = mysql.format(query, [
             req.body.name,
             req.body.address,
@@ -116,7 +116,7 @@ route.put('/', (req, res) => {
                 res.status(404).send("my company not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                db.query('select * from invoices_app_mycompany;', (err, rows) => {
+                db.query('select * from sys_company;', (err, rows) => {
                     if (err)
                         res.status(500).send(err.sqlMessage);
                     else

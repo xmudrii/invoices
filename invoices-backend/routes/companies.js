@@ -22,7 +22,7 @@ route.use(express.json());
 
 // Lista svih komintenata
 route.get('/', (req, res) => {
-    db.query('select * from invoices_app_company', (err, rows) => {
+    db.query('select * from company', (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -33,7 +33,7 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog komintenta
 route.get('/:id', (req, res) => {
-    let query = 'select * from invoices_app_company where id=?;';
+    let query = 'select * from company where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -59,7 +59,7 @@ route.post('/', (req, res) => {
     else {
         // SQL query
         let created_at = new Date();
-        let query = "insert into invoices_app_company (number, name, address, tax_number, national_id, email, city_id, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        let query = "insert into company (number, name, address, tax_number, national_id, email, city_id, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.name,
@@ -77,7 +77,7 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_company where id=?;'
+                query = 'select * from company where id=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -102,7 +102,7 @@ route.put('/:id', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let query = "update invoices_app_company set number=?, name=?, address=?, tax_number=?, national_id=?, email=?, city_id=? where id=?;";
+        let query = "update company set number=?, name=?, address=?, tax_number=?, national_id=?, email=?, city_id=? where id=?;";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.name,
@@ -119,7 +119,7 @@ route.put('/:id', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoices_app_company where id=?;'
+                query = 'select * from company where id=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -135,7 +135,7 @@ route.put('/:id', (req, res) => {
 
 // Brisanje komintenta
 route.delete('/:id', (req, res) => {
-    let query = 'select * from invoices_app_company where id=?;';
+    let query = 'select * from company where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -147,7 +147,7 @@ route.delete('/:id', (req, res) => {
         else {
             let city = rows[0];
 
-            let query = 'delete from invoices_app_company where id=?';
+            let query = 'delete from company where id=?';
             let formatted = mysql.format(query, [req.params.id]);
 
             db.query(formatted, (err, rows) => {
