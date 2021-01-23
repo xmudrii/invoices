@@ -1,6 +1,8 @@
 const express = require('express');
-//const racuni = require('./routes/racuni'); // Racuni ruter (REST API)
-const test = require('./routes/test');
+const cities = require('./routes/cities');
+const mycompany = require('./routes/mycompany');
+const companies = require('./routes/companies');
+const taxrates = require('./routes/taxrates');
 const history = require('connect-history-api-fallback');
 const path = require('path');
 
@@ -16,8 +18,10 @@ app.use(function(req, res, next) {
 });
 
 // Koristi racuni ruter na /api putanji
-//app.use('/api', racuni);
-app.use('/test', test);
+app.use('/cities', cities);
+app.use('/mycompany', mycompany);
+app.use('/companies', companies);
+app.use('/taxrates', taxrates);
 
 // Vue aplikacija
 const staticMiddleware = express.static(path.join(__dirname, 'dist'));

@@ -39,7 +39,7 @@ class Company(models.Model):
     email = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.name
@@ -66,7 +66,7 @@ class Invoice(models.Model):
     remarks = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.number
@@ -81,7 +81,7 @@ class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
+    # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.description
