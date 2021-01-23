@@ -53,7 +53,7 @@ route.post('/', (req, res) => {
                     res.status(403).send("only one company can exist");
                 else {
                     // SQL query
-                    let query = "insert into sys_company (name, address, tax_number, national_id, email, payment_account, city_id, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+                    let query = "insert into sys_company (name, address, tax_number, national_id, email, payment_account, city_id) values (?, ?, ?, ?, ?, ?, ?);";
                     let formatted = mysql.format(query, [
                         req.body.name,
                         req.body.address,
@@ -62,7 +62,6 @@ route.post('/', (req, res) => {
                         req.body.email,
                         req.body.payment_account,
                         req.body.city_id,
-                        new Date(),
                     ]);
 
                     db.query(formatted, (err, response) => {

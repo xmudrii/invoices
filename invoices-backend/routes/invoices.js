@@ -59,8 +59,7 @@ route.post('/', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let created_at = new Date();
-        let query = "insert into invoice (number, date, date_from, date_to, company_id, remarks, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        let query = "insert into invoice (number, date, date_from, date_to, company_id, remarks) values (?, ?, ?, ?, ?, ?);";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.date,
@@ -68,8 +67,6 @@ route.post('/', (req, res) => {
             req.body.date_to,
             req.body.company_id,
             req.body.remarks,
-            created_at,
-            created_at,
         ]);
 
         db.query(formatted, (err, response) => {
@@ -116,6 +113,8 @@ route.put('/:id', (req, res) => {
         db.query(formatted, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
+            else if (response.affectedRows === 0)
+                res.status(404).send("invoice not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
                 query = 'select * from invoice where id=?;'

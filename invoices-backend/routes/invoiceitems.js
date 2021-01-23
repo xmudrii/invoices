@@ -113,6 +113,8 @@ route.put('/item/:id', (req, res) => {
         db.query(formatted, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
+            else if (response.affectedRows === 0)
+                res.status(404).send("invoice item not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
                 query = 'select * from invoice_item where id=?;'

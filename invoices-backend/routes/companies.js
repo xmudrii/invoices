@@ -58,8 +58,7 @@ route.post('/', (req, res) => {
         res.status(400).send(error.details[0].message);
     else {
         // SQL query
-        let created_at = new Date();
-        let query = "insert into company (number, name, address, tax_number, national_id, email, city_id, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        let query = "insert into company (number, name, address, tax_number, national_id, email, city_id) values (?, ?, ?, ?, ?, ?, ?);";
         let formatted = mysql.format(query, [
             req.body.number,
             req.body.name,
@@ -68,8 +67,6 @@ route.post('/', (req, res) => {
             req.body.national_id,
             req.body.email,
             req.body.city_id,
-            created_at,
-            created_at,
         ]);
 
         db.query(formatted, (err, response) => {
@@ -117,6 +114,8 @@ route.put('/:id', (req, res) => {
         db.query(formatted, (err, response) => {
             if (err)
                 res.status(500).send(err.sqlMessage);
+            else if (response.affectedRows === 0)
+                res.status(404).send("company not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
                 query = 'select * from company where id=?;'
