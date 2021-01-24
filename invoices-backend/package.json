@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "createadmin": "node utils/createadmin.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "express": "^4.17.1",
     "joi": "^14.3.1",
     "mysql": "^2.18.1",
-    "njwt": "^1.0.0"
+    "njwt": "^1.0.0",
+    "prompt": "^1.1.0"
   }
 }
