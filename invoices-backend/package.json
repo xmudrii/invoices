@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "createadmin": "node utils/createadmin.js"
+    "createadmin": "node utils/createadmin.js",
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",

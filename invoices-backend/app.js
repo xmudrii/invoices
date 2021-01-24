@@ -3,11 +3,13 @@ const history = require('connect-history-api-fallback');
 const path = require('path');
 const settings = require('./settings.json');
 
-// Autentikacione rute
+// Validacija settings.json fajla
 if (settings.jwt_secret === undefined || settings.jwt_secret === "") {
     console.error("JWT secret is required!");
     process.exit(1);
 }
+
+// Autentikacione rute
 const auth = require('./auth/routes')
 
 // Rute za aplikaciju
@@ -28,6 +30,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+// Registracija ruta
 app.use('/', auth);
 app.use('/cities', cities);
 app.use('/mycompany', mycompany);
