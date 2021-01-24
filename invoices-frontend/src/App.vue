@@ -8,6 +8,20 @@
   </div>
 </template>
 
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  name: "App",
+  methods: {
+    ...mapActions(['load_invoices'])
+  },
+  mounted: function() {
+    this.load_invoices();
+  }
+}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

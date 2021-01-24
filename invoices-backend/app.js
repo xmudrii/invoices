@@ -32,11 +32,11 @@ app.use(function(req, res, next) {
 
 // Registracija ruta
 app.use('/', auth);
-app.use('/cities', cities);
-app.use('/mycompany', mycompany);
-app.use('/companies', companies);
-app.use('/taxrates', taxrates);
-app.use('/invoices', invoices);
+app.use('/api/cities', cities);
+app.use('/api/mycompany', mycompany);
+app.use('/api/companies', companies);
+app.use('/api/taxrates', taxrates);
+app.use('/api/invoices', invoices);
 
 // Vue aplikacija
 const staticMiddleware = express.static(path.join(__dirname, 'dist'));
