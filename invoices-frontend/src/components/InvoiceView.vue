@@ -25,13 +25,20 @@
       </b-table>
       <p v-else>No items.</p>
     </div>
-    <div class="mb-5">
-      <p class="text-left">Remarks: {{ invoice.remarks }}</p>
-    </div>
-    <div class="mb-5">
-      <b-button variant="primary" size="lg" @click="editInvoice">Edit invoice</b-button>
-      <b-button variant="primary" size="lg" @click="deleteInvoice">Delete invoice</b-button>
-    </div>
+    <b-row class="mb-5">
+      <b-col class="text-left">Remarks: {{ invoice.remarks }}</b-col>
+    </b-row>
+    <b-row class="mb-5">
+      <b-col>
+        <b-button variant="primary" size="lg" @click="addInvoiceItem">Add invoice item</b-button>
+      </b-col>
+      <b-col>
+        <b-button variant="primary" size="lg" @click="editInvoice">Edit invoice</b-button>
+      </b-col>
+      <b-col>
+        <b-button variant="danger" size="lg" @click="deleteInvoice">Delete invoice</b-button>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -56,6 +63,10 @@ export default {
   methods: {
     ...mapActions(['load_invoice_items', 'delete_invoice']),
 
+    addInvoiceItem: function (item, index, event) {
+      router.push({path: `/invoice/${this.invoice.id}/item`});
+    },
+
     editInvoice: function (item, index, event) {
       router.push({path: `/invoice/edit/${this.invoice.id}`});
     },
@@ -66,7 +77,7 @@ export default {
     },
 
     editInvoiceItem: function (item, index, event) {
-      // router.push({path: `/invoice/${item.id}`});
+      router.push({path: `/invoice/${this.invoice.id}/item/${item.id}`});
     },
 
     formatDate: function(date) {

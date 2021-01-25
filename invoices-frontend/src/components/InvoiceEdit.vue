@@ -135,7 +135,10 @@ export default {
 
           // TODO: Better handle this.
           // this.invoice = {};
-          router.push({path: `/invoice/${this.invoice.id}`});
+          if(this.invoice.id === undefined)
+            router.push({path: `/`});
+          else
+            router.push({path: `/invoice/${this.invoice.id}`});
         },
     }
 }

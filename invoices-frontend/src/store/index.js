@@ -41,6 +41,8 @@ export default new Vuex.Store({
           state.invoices[r].remarks = payload.invoice.remarks;
           state.invoices[r].created_at = payload.invoice.created_at;
           state.invoices[r].updated_at = payload.invoice.updated_at;
+          state.invoices[r].company_name = payload.invoice.company_name;
+          state.invoices[r].total = payload.invoice.total;
           break;
         }
       }
@@ -66,8 +68,17 @@ export default new Vuex.Store({
     update_invoice_item: function (state, payload) {
       for (let r = 0; r < state.invoice_items.length; r++) {
         if (state.invoice_items[r].id === parseInt(payload.id)) {
-          // TODO: Implement.
-          //state.racuni[r].RacunID = payload.racun.RacunID;
+          state.invoice_items[r].description = payload.invoice_item.description;
+          state.invoice_items[r].unit = payload.invoice_item.unit;
+          state.invoice_items[r].count = payload.invoice_item.count;
+          state.invoice_items[r].price = payload.invoice_item.price;
+          state.invoice_items[r].tax_rate_id = payload.invoice_item.tax_rate_id;
+          state.invoice_items[r].created_at = payload.invoice_item.created_at;
+          state.invoice_items[r].updated_at = payload.invoice_item.updated_at;
+          state.invoice_items[r].base_total = payload.invoice_item.base_total;
+          state.invoice_items[r].tax_value = payload.invoice_item.tax_value;
+          state.invoice_items[r].tax_total = payload.invoice_item.tax_total;
+          state.invoice_items[r].total = payload.invoice_item.total;
           break;
         }
       }
@@ -234,6 +245,29 @@ export default new Vuex.Store({
       });
     },
 
+    load_tax_rates: function ({ commit }) {
+      fetch(`${this._vm.$apiEndpoint}api/taxrates`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('set_taxrates', jsonData)
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            // TODO: Alert umesto console.log.
+            console.log(errorMessage);
+            // alert(errorMessage);
+          });
+        else {
+          // TODO: Alert umesto console.log.
+          console.log(error);
+          // alert(error);
+        }
+      });
+    },
+
     new_invoice: function({ commit }, invoice) {
       // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices`, {
@@ -296,6 +330,57 @@ export default new Vuex.Store({
         return response.json();
       }).then((jsonData) => {
         commit('remove_invoice', payload.id);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    new_invoice_item: function({ commit }, payload) {
+      // TODO: Validation
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice_id}/items`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.invoice_item
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('add_invoice_item', jsonData);
+        return jsonData.id;
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    change_invoice_item: function({ commit }, payload) {
+      // TODO: Validation
+      fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.invoice_item
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('update_invoice_item', {id: payload.id, invoice_item: jsonData});
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {

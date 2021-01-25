@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Invoice from "@/views/Invoice";
 import InvoiceForm from "@/views/InvoiceForm";
+import InvoiceItemForm from "@/views/InvoiceItemForm";
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,16 @@ const routes = [
     path: '/invoice/:id',
     name: 'Invoice',
     component: Invoice
+  },
+  {
+    path: '/invoice/:invoice/item',
+    name: 'NewInvoiceItem',
+    component: InvoiceItemForm
+  },
+  {
+    path: '/invoice/:invoice/item/:id',
+    name: 'EditInvoiceItem',
+    component: InvoiceItemForm
   }
   // {
   //   path: '/about',
