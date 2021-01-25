@@ -9,6 +9,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
+Vue.prototype.$apiEndpoint = 'http://localhost:8081/'
 
 new Vue({
   router,

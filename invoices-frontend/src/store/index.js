@@ -159,8 +159,8 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    load_invoices: function ({ commit }, payload) {
-      fetch('http://localhost/api/invoices', { method: 'get' }).then((response) => {
+    load_invoices: function ({ commit }) {
+      fetch(`${this._vm.$apiEndpoint}api/invoices`, { method: 'get' }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -183,7 +183,7 @@ export default new Vuex.Store({
     },
 
     load_invoice_items: function ({ commit }, payload) {
-      fetch(`http://localhost/api/invoices/${payload.invoice.id}/items`, { method: 'get' }).then((response) => {
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice.id}/items`, { method: 'get' }).then((response) => {
         if (!response.ok)
           throw response;
 
