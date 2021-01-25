@@ -28,6 +28,10 @@
     <div class="mb-5">
       <p class="text-left">Remarks: {{ invoice.remarks }}</p>
     </div>
+    <div class="mb-5">
+      <b-button variant="primary" size="lg" @click="editInvoice">Edit invoice</b-button>
+      <b-button variant="primary" size="lg" @click="deleteInvoice">Delete invoice</b-button>
+    </div>
   </b-container>
 </template>
 
@@ -49,7 +53,16 @@ export default {
     this.load_invoice_items({invoice: this.invoice})
   },
   methods: {
-    ...mapActions(['load_invoice_items']),
+    ...mapActions(['load_invoice_items', 'delete_invoice']),
+
+    editInvoice: function (item, index, event) {
+      router.push({path: `/invoice/edit/${this.invoice.id}`});
+    },
+
+    deleteInvoice: function (item, index, event) {
+      this.delete_invoice({id: this.invoice.id});
+      router.push({path: `/`});
+    },
 
     editInvoiceItem: function (item, index, event) {
       // router.push({path: `/invoice/${item.id}`});

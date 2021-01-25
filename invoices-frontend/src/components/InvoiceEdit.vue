@@ -105,15 +105,16 @@ export default {
         ...mapActions(['new_invoice', 'change_invoice', 'load_companies']),
 
         commit: function() {
-          const r = JSON.stringify(this.invoice, (key, value) => {
-            if(key === "id") return undefined;
-            // else if(key === "date" || key === "date_from" || key === "date_to") {
-            //   if(value.includes("T")) {
-            //     value = value.split('T')[0];
-            //   }
-            //   value = value + " 02:00:00";
-            // }
-            else if(value === null) return "";
+          let req = {
+            number: this.invoice.number,
+            date: this.invoice.date,
+            date_from: this.invoice.date_from,
+            date_to: this.invoice.date_to,
+            company_id: this.invoice.company_id,
+            remarks: this.invoice.remarks,
+          }
+          const r = JSON.stringify(req, (key, value) => {
+            if(value === null) return "";
             return value;
           });
 
@@ -124,6 +125,7 @@ export default {
 
           // TODO: Better handle this.
           // this.invoice = {};
+          router.push({path: `/invoice/${this.invoice.id}`});
         },
     }
 }

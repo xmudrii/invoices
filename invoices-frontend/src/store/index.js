@@ -33,9 +33,14 @@ export default new Vuex.Store({
     update_invoice: function (state, payload) {
       for (let r = 0; r < state.invoices.length; r++) {
         if (state.invoices[r].id === parseInt(payload.id)) {
-          // TODO: Implement.
-
-          // state.invoices[r].id = payload.invoice.id;
+          state.invoices[r].number = payload.invoice.number;
+          state.invoices[r].date = payload.invoice.date;
+          state.invoices[r].date_from = payload.invoice.date_from;
+          state.invoices[r].date_to = payload.invoice.date_to;
+          state.invoices[r].company_id = payload.invoice.company_id;
+          state.invoices[r].remarks = payload.invoice.remarks;
+          state.invoices[r].created_at = payload.invoice.created_at;
+          state.invoices[r].updated_at = payload.invoice.updated_at;
           break;
         }
       }
@@ -256,9 +261,50 @@ export default new Vuex.Store({
     },
 
     change_invoice: function({ commit }, payload) {
+      // TODO: Validation
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.invoice
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
 
+        return response.json();
+      }).then((jsonData) => {
+        commit('update_invoice', {id: payload.id, invoice: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
     },
 
+    delete_invoice: function({ commit }, payload) {
+      // TODO: Validation
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
+        method: 'delete',
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('remove_invoice', payload.id);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
 
   }
 })

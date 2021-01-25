@@ -9,9 +9,6 @@
         head-variant="light"
         @row-clicked="editInovice"
         >
-      <template v-slot:cell(action)="item">
-        <b-button variant="danger" @click="delete_invoice(item.item.id)">Obriši</b-button>
-      </template>
     </b-table>
     <h1 v-else>No invoices.</h1>
   </div>
@@ -32,14 +29,11 @@ export default {
         { key: 'number', label: 'Invoice No.' },
         { key: 'date', label: 'Invoice Date' },
         { key: 'company_name', label: 'Company' },
-        { key: 'total', label: 'Total', formatFn: this.formatTotal, type: 'Double' },
-        { key: 'action', label: 'Actions' }
+        { key: 'total', label: 'Total', type: 'Double' },
       ]
     }
   },
   methods: {
-    ...mapActions(['delete_invoice']),
-
     editInovice: function (item, index, event) {
       router.push({path: `/invoice/${item.id}`});
     }
