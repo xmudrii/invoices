@@ -21,7 +21,14 @@ route.use(express.json());
 
 // Lista svih stavki za racun
 route.get('/:invoice/items', (req, res) => {
-    let query = 'select * from invoice_item where invoice_id=?;';
+    let query = 'SELECT `invoice_item`.*, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`), 0), 2) AS `base_total`, ' +
+        '`sys_tax_rate`.`value` AS `tax_value`, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100), 0), 2) AS `tax_total`, ' +
+        'ROUND(IFNULL(((`invoice_item`.`price`*`invoice_item`.`count`) + (`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+        'FROM `invoice_item` ' +
+        'INNER JOIN `sys_tax_rate` ON `invoice_item`.`tax_rate_id` = `sys_tax_rate`.`id` ' +
+        'WHERE `invoice_item`.`invoice_id`=?;';
     let formatted = mysql.format(query, [req.params.invoice]);
 
     db.query(formatted, (err, rows) => {
@@ -59,7 +66,14 @@ route.post('/:invoice/items', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoice_item where id=?;'
+                query = 'SELECT `invoice_item`.*, ' +
+                    'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`), 0), 2) AS `base_total`, ' +
+                    '`sys_tax_rate`.`value` AS `tax_value`, ' +
+                    'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100), 0), 2) AS `tax_total`, ' +
+                    'ROUND(IFNULL(((`invoice_item`.`price`*`invoice_item`.`count`) + (`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+                    'FROM `invoice_item` ' +
+                    'INNER JOIN `sys_tax_rate` ON `invoice_item`.`tax_rate_id` = `sys_tax_rate`.`id` ' +
+                    'WHERE `invoice_item`.`id`=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -75,7 +89,14 @@ route.post('/:invoice/items', (req, res) => {
 
 // Pojedinacna stavka
 route.get('/item/:id', (req, res) => {
-    let query = 'select * from invoice_item where id=?;';
+    let query = 'SELECT `invoice_item`.*, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`), 0), 2) AS `base_total`, ' +
+        '`sys_tax_rate`.`value` AS `tax_value`, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100), 0), 2) AS `tax_total`, ' +
+        'ROUND(IFNULL(((`invoice_item`.`price`*`invoice_item`.`count`) + (`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+        'FROM `invoice_item` ' +
+        'INNER JOIN `sys_tax_rate` ON `invoice_item`.`tax_rate_id` = `sys_tax_rate`.`id` ' +
+        'WHERE `invoice_item`.`id`=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -117,7 +138,14 @@ route.put('/item/:id', (req, res) => {
                 res.status(404).send("invoice item not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from invoice_item where id=?;'
+                query = 'SELECT `invoice_item`.*, ' +
+                    'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`), 0), 2) AS `base_total`, ' +
+                    '`sys_tax_rate`.`value` AS `tax_value`, ' +
+                    'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100), 0), 2) AS `tax_total`, ' +
+                    'ROUND(IFNULL(((`invoice_item`.`price`*`invoice_item`.`count`) + (`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+                    'FROM `invoice_item` ' +
+                    'INNER JOIN `sys_tax_rate` ON `invoice_item`.`tax_rate_id` = `sys_tax_rate`.`id` ' +
+                    'WHERE `invoice_item`.`id`=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -133,7 +161,14 @@ route.put('/item/:id', (req, res) => {
 
 // Brisanje stavke
 route.delete('/item/:id', (req, res) => {
-    let query = 'select * from invoice_item where id=?;';
+    let query = 'SELECT `invoice_item`.*, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`), 0), 2) AS `base_total`, ' +
+        '`sys_tax_rate`.`value` AS `tax_value`, ' +
+        'ROUND(IFNULL((`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100), 0), 2) AS `tax_total`, ' +
+        'ROUND(IFNULL(((`invoice_item`.`price`*`invoice_item`.`count`) + (`invoice_item`.`price`*`invoice_item`.`count`*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+        'FROM `invoice_item` ' +
+        'INNER JOIN `sys_tax_rate` ON `invoice_item`.`tax_rate_id` = `sys_tax_rate`.`id` ' +
+        'WHERE `invoice_item`.`id`=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {

@@ -12,9 +12,22 @@
     <b-row class="mb-4">
       <b-col class="text-left">Company name: {{ invoice.company_name }}</b-col>
     </b-row>
-    <b-row class="mb-4">
-      <b-col class="text-left">Remarks: {{ invoice.remarks }}</b-col>
-    </b-row>
+    <div>
+      <b-table
+          hover v-if="invoice_items.length"
+          sticky-header="800px"
+          :items="invoice_items"
+          :fields="fields"
+          :primary-key="invoice_items.id"
+          head-variant="light"
+          @row-clicked="editInvoiceItem"
+      >
+      </b-table>
+      <p v-else>No items.</p>
+    </div>
+    <div class="mb-5">
+      <p class="text-left">Remarks: {{ invoice.remarks }}</p>
+    </div>
   </b-container>
 </template>
 
@@ -29,19 +42,32 @@ export default {
       type: Object,
     }
   },
-  // data() {
-  //   return {
-  //     newInvoice: {
-  //       id: ''
-  //     }
-  //   }
-  // },
-  // mounted: function () {
-  //   this.newInvoice = this.invoice;
-  // },
+  computed: {
+    ...mapState(['invoice_items']),
+  },
+  mounted: function () {
+    this.load_invoice_items({invoice: this.invoice})
+  },
   methods: {
-    // ...mapActions(['new_invoice', 'change_invoice']),
+    ...mapActions(['load_invoice_items']),
 
+    editInvoiceItem: function (item, index, event) {
+      // router.push({path: `/invoice/${item.id}`});
+    }
+  },
+  data() {
+    return {
+      fields: [
+        { key: 'description', label: 'Description' },
+        { key: 'unit', label: 'Unit' },
+        { key: 'count', label: 'Count' },
+        { key: 'price', label: 'Price' },
+        { key: 'base_total', label: 'Base' },
+        { key: 'tax_value', label: 'Tax Percent' },
+        { key: 'tax_total', label: 'Tax Total' },
+        { key: 'total', label: 'Total' },
+      ]
+    }
   }
 }
 </script>

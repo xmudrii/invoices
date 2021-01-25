@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     invoices: [],
+    invoice_items: [],
     companies: [],
     mycompany: [],
     cities: [],
@@ -32,6 +33,33 @@ export default new Vuex.Store({
     update_invoice: function (state, payload) {
       for (let r = 0; r < state.invoices.length; r++) {
         if (state.invoices[r].id === parseInt(payload.id)) {
+          // TODO: Implement.
+          //state.racuni[r].RacunID = payload.racun.RacunID;
+          break;
+        }
+      }
+    },
+
+    /**
+     * Invoices mutations
+     */
+    set_invoice_items: function (state, invoice_items) {
+      state.invoice_items = invoice_items;
+    },
+    add_invoice_item: function (state, invoice_item) {
+      state.invoice_items.push(invoice_item);
+    },
+    remove_invoice_item: function (state, id) {
+      for (let r = 0; r < state.invoice_items.length; r++) {
+        if (state.invoice_items[r].id === id) {
+          state.invoice_items.splice(r, 1);
+          break;
+        }
+      }
+    },
+    update_invoice_item: function (state, payload) {
+      for (let r = 0; r < state.invoice_items.length; r++) {
+        if (state.invoice_items[r].id === parseInt(payload.id)) {
           // TODO: Implement.
           //state.racuni[r].RacunID = payload.racun.RacunID;
           break;
@@ -131,7 +159,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    load_invoices: function ({ commit }) {
+    load_invoices: function ({ commit }, payload) {
       fetch('http://localhost/api/invoices', { method: 'get' }).then((response) => {
         if (!response.ok)
           throw response;
@@ -139,6 +167,29 @@ export default new Vuex.Store({
         return response.json()
       }).then((jsonData) => {
         commit('set_invoices', jsonData)
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            // TODO: Alert umesto console.log.
+            console.log(errorMessage);
+            // alert(errorMessage);
+          });
+        else {
+          // TODO: Alert umesto console.log.
+          console.log(error);
+          // alert(error);
+        }
+      });
+    },
+
+    load_invoice_items: function ({ commit }, payload) {
+      fetch(`http://localhost/api/invoices/${payload.invoice.id}/items`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('set_invoice_items', jsonData)
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
