@@ -23,7 +23,7 @@ route.use(express.json());
 
 // Lista svih racuna
 route.get('/', (req, res) => {
-    let query = "SELECT `invoice`.`id`, `invoice`.`number`, DATE_FORMAT(`invoice`.`date`, '%d.%m.%Y') AS `date`, DATE_FORMAT(`invoice`.`date_from`, '%d.%m.%Y') AS `date_from`, DATE_FORMAT(`invoice`.`date_to`, '%d.%m.%Y') AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` " +
+    let query = "SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` " +
         "FROM `invoice` " +
         "INNER JOIN `company` ON `invoice`.`company_id` = `company`.`id` " +
         "LEFT JOIN `invoice_item` ON `invoice`.`id` = `invoice_item`.`invoice_id` " +
@@ -41,7 +41,7 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog racuna
 route.get('/:id', (req, res) => {
-    let query = 'SELECT `invoice`.`id`, `invoice`.`number`, DATE_FORMAT(`invoice`.`date`, "%d.%m.%Y") AS `date`, DATE_FORMAT(`invoice`.`date_from`, "%d.%m.%Y") AS `date_from`, DATE_FORMAT(`invoice`.`date_to`, "%d.%m.%Y") AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+    let query = 'SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
         'FROM `invoice` ' +
         'INNER JOIN `company` ON `invoice`.`company_id` = `company`.`id` ' +
         'LEFT JOIN `invoice_item` ON `invoice`.`id` = `invoice_item`.`invoice_id` ' +
@@ -87,7 +87,7 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'SELECT `invoice`.`id`, `invoice`.`number`, DATE_FORMAT(`invoice`.`date`, "%d.%m.%Y") AS `date`, DATE_FORMAT(`invoice`.`date_from`, "%d.%m.%Y") AS `date_from`, DATE_FORMAT(`invoice`.`date_to`, "%d.%m.%Y") AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+                query = 'SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
                     'FROM `invoice` ' +
                     'INNER JOIN `company` ON `invoice`.`company_id` = `company`.`id` ' +
                     'LEFT JOIN `invoice_item` ON `invoice`.`id` = `invoice_item`.`invoice_id` ' +
@@ -136,7 +136,7 @@ route.put('/:id', (req, res) => {
                 res.status(404).send("invoice not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'SELECT `invoice`.`id`, `invoice`.`number`, DATE_FORMAT(`invoice`.`date`, "%d.%m.%Y") AS `date`, DATE_FORMAT(`invoice`.`date_from`, "%d.%m.%Y") AS `date_from`, DATE_FORMAT(`invoice`.`date_to`, "%d.%m.%Y") AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+                query = 'SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
                     'FROM `invoice` ' +
                     'INNER JOIN `company` ON `invoice`.`company_id` = `company`.`id` ' +
                     'LEFT JOIN `invoice_item` ON `invoice`.`id` = `invoice_item`.`invoice_id` ' +
@@ -158,7 +158,7 @@ route.put('/:id', (req, res) => {
 
 // Brisanje racuna
 route.delete('/:id', (req, res) => {
-    let query = 'SELECT `invoice`.`id`, `invoice`.`number`, DATE_FORMAT(`invoice`.`date`, "%d.%m.%Y") AS `date`, DATE_FORMAT(`invoice`.`date_from`, "%d.%m.%Y") AS `date_from`, DATE_FORMAT(`invoice`.`date_to`, "%d.%m.%Y") AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
+    let query = 'SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, ROUND(IFNULL((SUM(`invoice_item`.`price`*`invoice_item`.`count`) + (SUM(`invoice_item`.`price`*`invoice_item`.`count`)*`sys_tax_rate`.`value`/100)), 0), 2) AS `total` ' +
         'FROM `invoice` ' +
         'INNER JOIN `company` ON `invoice`.`company_id` = `company`.`id` ' +
         'LEFT JOIN `invoice_item` ON `invoice`.`id` = `invoice_item`.`invoice_id` ' +

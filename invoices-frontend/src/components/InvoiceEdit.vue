@@ -115,6 +115,16 @@ export default {
           }
           const r = JSON.stringify(req, (key, value) => {
             if(value === null) return "";
+            else if(key === "date" || key === "date_from" || key === "date_to") {
+              if(value.includes("T")) {
+                const s = value.split('T');
+                value = s[0] + " ";
+                if(s[1].includes('.'))
+                  value += s[1].split('.')[0];
+                else
+                  value += s[1];
+              }
+            }
             return value;
           });
 

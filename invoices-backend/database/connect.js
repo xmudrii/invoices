@@ -9,7 +9,8 @@ function connectDatabase() {
             host: settings.host,
             user: settings.user,
             password: settings.password,
-            database: settings.database
+            database: settings.database,
+            dateStrings: true,
         });
     }
     return pool;

@@ -4,10 +4,10 @@
       <b-col class="text-left">Invoice number: {{ invoice.number }}</b-col>
     </b-row>
     <b-row class="mb-4">
-      <b-col class="text-left">Invoice date: {{ invoice.date }}</b-col>
+      <b-col class="text-left">Invoice date: {{ formatDate(invoice.date) }}</b-col>
     </b-row>
     <b-row class="mb-4">
-      <b-col class="text-left">Date from {{ invoice.date_from }} to {{ invoice.date_to }}</b-col>
+      <b-col class="text-left"><b>Date from</b> {{ formatDate(invoice.date_from) }} <b>to</b> {{ formatDate(invoice.date_to) }}</b-col>
     </b-row>
     <b-row class="mb-4">
       <b-col class="text-left">Company name: {{ invoice.company_name }}</b-col>
@@ -38,6 +38,7 @@
 <script>
 import router from "@/router";
 import { mapState, mapActions } from 'vuex';
+import {DateTime} from "luxon";
 
 export default {
   name: "InvoiceView",
@@ -66,19 +67,40 @@ export default {
 
     editInvoiceItem: function (item, index, event) {
       // router.push({path: `/invoice/${item.id}`});
+    },
+
+    formatDate: function(date) {
+      return DateTime.fromSQL(date).setLocale("sr-RS").toLocaleString({
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    },
+
+    formatDouble: function(value) {
+      return parseFloat(value).toLocaleString("sr-RS", {
+        minimumFractionDigits: 2
+      });
+    },
+
+    formatTaxValue: function(value) {
+      const val = parseFloat(value).toLocaleString("sr-RS", {
+        minimumFractionDigits: 2
+      });
+      return val + "%";
     }
   },
   data() {
     return {
       fields: [
-        { key: 'description', label: 'Description' },
-        { key: 'unit', label: 'Unit' },
-        { key: 'count', label: 'Count' },
-        { key: 'price', label: 'Price' },
-        { key: 'base_total', label: 'Base' },
-        { key: 'tax_value', label: 'Tax Percent' },
-        { key: 'tax_total', label: 'Tax Total' },
-        { key: 'total', label: 'Total' },
+        { key: 'description', label: 'Description', tdClass: "text-left", thClass: "text-left" },
+        { key: 'unit', label: 'Unit', tdClass: "text-center" },
+        { key: 'count', label: 'Count', tdClass: "text-center" },
+        { key: 'price', label: 'Price', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'base_total', label: 'Base', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'tax_value', label: 'Tax Percent', formatter: "formatTaxValue", tdClass: "text-right" },
+        { key: 'tax_total', label: 'Tax Total', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'total', label: 'Total', formatter: "formatDouble", tdClass: "text-right" },
       ]
     }
   }
