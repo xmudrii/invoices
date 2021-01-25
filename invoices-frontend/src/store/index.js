@@ -283,7 +283,6 @@ export default new Vuex.Store({
         return response.json();
       }).then((jsonData) => {
         commit('add_invoice', jsonData);
-        return jsonData.id;
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
@@ -355,7 +354,6 @@ export default new Vuex.Store({
         return response.json();
       }).then((jsonData) => {
         commit('add_invoice_item', jsonData);
-        return jsonData.id;
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {

@@ -106,13 +106,16 @@ export default {
           });
 
           if (!this.$route.params.id)
-            this.new_invoice_item({invoice_id: this.invoice.id, invoice_item: r});
+            this.new_invoice_item({invoice_id: this.invoice.id, invoice_item: r}).then((response) => {
+              router.push({path: `/invoice/${this.invoice.id}`});
+            });
           else
-            this.change_invoice_item({id: this.$route.params.id, invoice_item: r});
+            this.change_invoice_item({id: this.$route.params.id, invoice_item: r}).then((response) => {
+              router.push({path: `/invoice/${this.invoice.id}`});
+            });
 
           // TODO: Better handle this.
           // this.invoice = {};
-          router.push({path: `/invoice/${this.invoice.id}`});
         },
     }
 }
