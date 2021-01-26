@@ -32,9 +32,18 @@
                   slot-scope="data"
         >
           <td v-for="(field, i) in data.fields" class="text-right">
-            <b v-if="i === 4">{{ totalBase() }}</b>
-            <b v-if="i === 6">{{ totalTax() }}</b>
-            <b v-if="i === 7">{{ totalInvoice() }}</b>
+            <div v-if="i === 0" class="text-left">
+              <b>Grand Total</b>
+            </div>
+            <div v-if="i === 4" class="text-right">
+              <b>{{ totalBase() }}</b>
+            </div>
+            <div v-if="i === 6" class="text-right">
+              <b>{{ totalTax() }}</b>
+            </div>
+            <div v-if="i === 7" class="text-right">
+              <b>{{ totalInvoice() }}</b>
+            </div>
           </td>
         </template>
       </b-table>
@@ -158,9 +167,9 @@ export default {
       fields: [
         { key: 'description', label: 'Description', tdClass: "text-left", thClass: "text-left" },
         { key: 'unit', label: 'Unit', tdClass: "text-center" },
-        { key: 'count', label: 'Count', formatter: "formatCount", tdClass: "text-right" },
-        { key: 'price', label: 'Price', formatter: "formatDouble", tdClass: "text-right" },
-        { key: 'base_total', label: 'Base', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'count', label: 'Quantity', formatter: "formatCount", tdClass: "text-right" },
+        { key: 'price', label: 'Unit Price', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'base_total', label: 'Net Price', formatter: "formatDouble", tdClass: "text-right" },
         { key: 'tax_value', label: 'Tax Percent', formatter: "formatTaxValue", tdClass: "text-right" },
         { key: 'tax_total', label: 'Tax Total', formatter: "formatDouble", tdClass: "text-right" },
         { key: 'total', label: 'Total', formatter: "formatDouble", tdClass: "text-right" },

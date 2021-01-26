@@ -33,7 +33,7 @@
 
       <b-row class="mt-3">
         <b-col sm="2" style="text-align: left">
-          <label for="count">Count:</label>
+          <label for="count">Quantity:</label>
         </b-col>
         <b-col sm="2">
           <b-input id="count" v-model="invoice_item.count" class="text-right"></b-input>
@@ -47,7 +47,7 @@
 
       <b-row class="mt-3">
         <b-col sm="2" style="text-align: left">
-          <label for="price">Price:</label>
+          <label for="price">Unit price:</label>
         </b-col>
         <b-col sm="2">
           <b-input id="price" v-model="invoice_item.price" class="text-right"></b-input>
