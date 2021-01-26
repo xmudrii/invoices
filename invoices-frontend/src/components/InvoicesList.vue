@@ -27,10 +27,10 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'number', label: 'Invoice No.', tdClass: "text-left", thClass: "text-left" },
-        { key: 'date', label: 'Invoice Date', formatter: "formatDate", tdClass: "text-left", thClass: "text-left" },
-        { key: 'company_name', label: 'Company', tdClass: "text-left", thClass: "text-left" },
-        { key: 'total', label: 'Total', type: 'Double', formatter: "formatDouble", tdClass: "text-right" },
+        { key: 'number', label: 'Invoice No.', tdClass: "text-left", thClass: "text-left", sortable: true },
+        { key: 'date', label: 'Invoice Date', formatter: "formatDate", tdClass: "text-left", thClass: "text-left", sortable: true },
+        { key: 'company_name', label: 'Company', tdClass: "text-left", thClass: "text-left", sortable: true },
+        { key: 'total', label: 'Total', type: 'Double', formatter: "formatDouble", tdClass: "text-right", sortable: true },
       ]
     }
   },
