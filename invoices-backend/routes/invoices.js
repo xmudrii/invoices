@@ -11,11 +11,11 @@ const route = express.Router();
 // Sema za validaciju
 const sema = Joi.object().keys({
     number: Joi.string().trim().min(5).max(5).required(),
-    date: Joi.string().optional().allow(''),
-    date_from: Joi.string().optional().allow(''),
-    date_to: Joi.string().optional().allow(''),
+    date: Joi.string().optional().allow(null).allow(''),
+    date_from: Joi.string().optional().allow(null).allow(''),
+    date_to: Joi.string().optional().allow(null).allow(''),
     company_id: Joi.number().precision(0).required(),
-    remarks: Joi.string().optional().allow(''),
+    remarks: Joi.string().optional().allow(null).allow(''),
 });
 
 // Koristi JSON Middleware za parsiranje requestova
