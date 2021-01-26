@@ -8,7 +8,7 @@
       </b-row>
       <b-row>
         <b-col class="text-left">
-          <b-form-textarea id="description" v-model="invoice_item.description" placeholder="Description"></b-form-textarea>
+          <b-form-textarea id="description" v-model="invoice_item.description"></b-form-textarea>
         </b-col>
       </b-row>
 
@@ -59,8 +59,8 @@
         <b-col>
           <b-button variant="primary" size="lg" @click="commit">Save</b-button>
         </b-col>
-        <b-col v-if="invoice_item.id">
-          <b-button variant="danger" size="lg" @click="deleteItem">Delete</b-button>
+        <b-col>
+          <b-button variant="danger" size="lg" @click="deleteItem" v-if="invoice_item.id">Delete</b-button>
         </b-col>
       </b-row>
     </b-form>

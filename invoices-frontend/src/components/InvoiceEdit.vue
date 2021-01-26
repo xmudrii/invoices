@@ -2,19 +2,19 @@
   <b-container fluid>
     <b-form>
       <b-row class="mt-2">
-        <b-col sm="2" style="text-align: left">
+        <b-col sm="2" class="text-left">
           <label for="number">Invoice number:</label>
         </b-col>
-        <b-col sm="2">
-          <b-input id="number" v-model="invoice.number"></b-input>
+        <b-col sm="3">
+          <b-input id="number" v-model="invoice.number" class="text-center"></b-input>
         </b-col>
       </b-row>
 
       <b-row class="mt-2">
-        <b-col sm="2" style="text-align: left">
+        <b-col sm="2" class="text-left">
           <label for="date">Invoice date:</label>
         </b-col>
-        <b-col sm="2">
+        <b-col sm="3">
           <b-form-datepicker
               id="date"
               v-model="invoice.date"
@@ -24,21 +24,20 @@
       </b-row>
 
       <b-row class="mt-2">
-        <b-col sm="2" style="text-align: left">
+        <b-col sm="2" class="text-left">
           <label for="date_from">Date from:</label>
         </b-col>
-        <b-col sm="2">
+        <b-col sm="3">
           <b-form-datepicker
               id="date_from"
               v-model="invoice.date_from"
               :date-format-options="{ day: '2-digit', month: '2-digit', year: 'numeric' }"
           ></b-form-datepicker>
         </b-col>
-        <b-col sm="1"/>
-        <b-col sm="2" style="text-align: left">
-          <label for="date_to">Date to:</label>
+        <b-col md="auto" class="text-left">
+          <label for="date_to">to:</label>
         </b-col>
-        <b-col sm="2">
+        <b-col sm="3">
             <b-form-datepicker
               id="date_to"
               v-model="invoice.date_to"
@@ -48,8 +47,13 @@
       </b-row>
 
       <b-row class="mt-3">
-        <b-col sm="12" style="text-align: left">
-          <b-form-select v-model="invoice.company_id">
+        <b-col sm="12" class="text-left">
+          <label for="company">Company:</label>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col sm="12" class="text-left">
+          <b-form-select id="company" v-model="invoice.company_id">
             <option v-for="selected in companies"
                     :key="selected.id"
                     :value="selected.id"
@@ -61,15 +65,21 @@
       </b-row>
 
       <b-row class="mt-3">
-        <b-col sm="12" style="text-align: left">
-          <b-form-textarea v-model="invoice.remarks" placeholder="Remarks"></b-form-textarea>
+        <b-col sm="12" class="text-left">
+          <label for="remarks">Remarks:</label>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col sm="12" class="text-left">
+          <b-form-textarea id="remarks" v-model="invoice.remarks"></b-form-textarea>
         </b-col>
       </b-row>
 
       <b-row class="mt-5">
-        <b-col sm="3">
+        <b-col>
           <b-button variant="primary" size="lg" @click="commit">Save</b-button>
         </b-col>
+        <b-col></b-col>
       </b-row>
     </b-form>
   </b-container>
