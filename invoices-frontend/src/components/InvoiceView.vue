@@ -1,18 +1,24 @@
 <template>
   <b-container fluid>
-    <b-row class="mb-4">
-      <b-col class="text-left">Invoice number: {{ invoice.number }}</b-col>
+    <b-row class="mb-3">
+      <b-col class="text-left" sm="2">Invoice number:</b-col>
+      <b-col class="text-left"><b>{{ invoice.number }}</b></b-col>
     </b-row>
-    <b-row class="mb-4">
-      <b-col class="text-left">Invoice date: {{ formatDate(invoice.date) }}</b-col>
+    <b-row class="mb-3">
+      <b-col class="text-left" sm="2">Invoice date:</b-col>
+      <b-col class="text-left"><b>{{ formatDate(invoice.date) }}</b></b-col>
     </b-row>
-    <b-row class="mb-4">
-      <b-col class="text-left"><b>Date from</b> {{ formatDate(invoice.date_from) }} <b>to</b> {{ formatDate(invoice.date_to) }}</b-col>
+    <b-row class="mb-3">
+      <b-col class="text-left" sm="2">Date from:</b-col>
+      <b-col class="text-left" sm="1"><b>{{ formatDate(invoice.date_from) }}</b></b-col>
+      <b-col class="text-center" sm="1">to:</b-col>
+      <b-col class="text-left" sm="1"><b>{{ formatDate(invoice.date_to) }}</b></b-col>
     </b-row>
-    <b-row class="mb-4">
-      <b-col class="text-left">Company name: {{ invoice.company_name }}</b-col>
+    <b-row class="mb-5">
+      <b-col class="text-left" sm="2">Company name:</b-col>
+      <b-col class="text-left"><b>{{ invoice.company_name }}</b></b-col>
     </b-row>
-    <div>
+    <div class="mb-5">
       <b-table
           hover v-if="invoice_items.length"
           sticky-header="800px"
@@ -26,7 +32,8 @@
       <p v-else>No items.</p>
     </div>
     <b-row class="mb-5">
-      <b-col class="text-left">Remarks: {{ invoice.remarks }}</b-col>
+      <b-col class="text-left" sm="2">Remarks:</b-col>
+      <b-col class="text-left"><b>{{ invoice.remarks }}</b></b-col>
     </b-row>
     <b-row class="mb-5">
       <b-col>
@@ -94,6 +101,12 @@ export default {
       });
     },
 
+    formatCount: function(value) {
+      return parseFloat(value).toLocaleString("sr-RS", {
+        minimumFractionDigits: 3
+      });
+    },
+
     formatTaxValue: function(value) {
       const val = parseFloat(value).toLocaleString("sr-RS", {
         minimumFractionDigits: 2
@@ -106,7 +119,7 @@ export default {
       fields: [
         { key: 'description', label: 'Description', tdClass: "text-left", thClass: "text-left" },
         { key: 'unit', label: 'Unit', tdClass: "text-center" },
-        { key: 'count', label: 'Count', tdClass: "text-center" },
+        { key: 'count', label: 'Count', formatter: "formatCount", tdClass: "text-right" },
         { key: 'price', label: 'Price', formatter: "formatDouble", tdClass: "text-right" },
         { key: 'base_total', label: 'Base', formatter: "formatDouble", tdClass: "text-right" },
         { key: 'tax_value', label: 'Tax Percent', formatter: "formatTaxValue", tdClass: "text-right" },
