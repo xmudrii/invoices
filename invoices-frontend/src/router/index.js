@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Invoice from "@/views/Invoice";
 import InvoiceForm from "@/views/InvoiceForm";
 import InvoiceItemForm from "@/views/InvoiceItemForm";
+import Companies from "@/views/Companies";
 
 Vue.use(VueRouter)
 
@@ -59,7 +60,12 @@ const routes = [
         next('/');
       next();
     }
-  }
+  },
+  {
+    path: '/companies',
+    name: 'Companies',
+    component: Companies
+  },
 ]
 
 const router = new VueRouter({

@@ -10,7 +10,7 @@
         </b-nav-item-dropdown>
 
         <b-nav-item-dropdown text="Companies" to="/">
-          <b-dropdown-item>Preview all companies</b-dropdown-item>
+          <b-dropdown-item to="/companies">Preview all companies</b-dropdown-item>
           <b-dropdown-item>New company</b-dropdown-item>
         </b-nav-item-dropdown>
 

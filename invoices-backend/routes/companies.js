@@ -22,7 +22,10 @@ route.use(express.json());
 
 // Lista svih komintenata
 route.get('/', (req, res) => {
-    db.query('select * from company', (err, rows) => {
+    let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
+        'FROM `company` ' +
+        'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id`;'
+    db.query(query, (err, rows) => {
         if (err)
             // Greska servera
             res.status(500).send(err.sqlMessage);
@@ -33,7 +36,10 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog komintenta
 route.get('/:id', (req, res) => {
-    let query = 'select * from company where id=?;';
+    let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
+        'FROM `company` ' +
+        'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +
+        'WHERE `company`.`id`=?;'
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
@@ -74,7 +80,10 @@ route.post('/', (req, res) => {
                 res.status(500).send(err.sqlMessage);
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from company where id=?;'
+                query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
+                    'FROM `company` ' +
+                    'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +
+                    'WHERE `company`.`id`=?;'
                 formatted = mysql.format(query, [response.insertId]);
 
                 db.query(formatted, (err, rows) => {
@@ -118,7 +127,10 @@ route.put('/:id', (req, res) => {
                 res.status(404).send("company not found");
             else {
                 // Ako nema greske, vracamo kreirani objekat
-                query = 'select * from company where id=?;'
+                query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
+                    'FROM `company` ' +
+                    'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +
+                    'WHERE `company`.`id`=?;'
                 formatted = mysql.format(query, [req.params.id]);
 
                 db.query(formatted, (err, rows) => {
@@ -134,7 +146,10 @@ route.put('/:id', (req, res) => {
 
 // Brisanje komintenta
 route.delete('/:id', (req, res) => {
-    let query = 'select * from company where id=?;';
+    let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
+        'FROM `company` ' +
+        'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +
+        'WHERE `company`.`id`=?;'
     let formatted = mysql.format(query, [req.params.id]);
 
     db.query(formatted, (err, rows) => {
