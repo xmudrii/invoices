@@ -28,6 +28,15 @@
           head-variant="light"
           @row-clicked="editInvoiceItem"
       >
+        <template slot="bottom-row"
+                  slot-scope="data"
+        >
+          <td v-for="(field, i) in data.fields" class="text-right">
+            <b v-if="i === 4">{{ totalBase() }}</b>
+            <b v-if="i === 6">{{ totalTax() }}</b>
+            <b v-if="i === 7">{{ totalInvoice() }}</b>
+          </td>
+        </template>
       </b-table>
       <p v-else>No items.</p>
     </div>
@@ -109,6 +118,36 @@ export default {
         minimumFractionDigits: 2
       });
       return val + "%";
+    },
+
+    totalBase: function() {
+      let t = 0.00;
+      if(this.invoice_items.length !== 0) {
+        for (let i = 0; i < this.invoice_items.length; i++) {
+          t += parseFloat(this.invoice_items[i].base_total);
+        }
+      }
+      return this.formatDouble(t);
+    },
+
+    totalTax: function() {
+      let t = 0.00;
+      if(this.invoice_items.length !== 0) {
+        for (let i = 0; i < this.invoice_items.length; i++) {
+          t += parseFloat(this.invoice_items[i].tax_total);
+        }
+      }
+      return this.formatDouble(t);
+    },
+
+    totalInvoice: function() {
+      let t = 0.00;
+      if(this.invoice_items.length !== 0) {
+        for (let i = 0; i < this.invoice_items.length; i++) {
+          t += parseFloat(this.invoice_items[i].total);
+        }
+      }
+      return this.formatDouble(t);
     }
   },
   mounted: function () {
