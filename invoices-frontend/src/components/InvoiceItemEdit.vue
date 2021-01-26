@@ -110,6 +110,7 @@ export default {
           }
           const r = JSON.stringify(req, (key, value) => {
             if(value === null) return "";
+            else if(value === undefined) return null;
             return value;
           });
 

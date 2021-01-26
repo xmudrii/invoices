@@ -22,11 +22,11 @@ export default {
     Header,
     InvoicesList
   },
-  mounted: function() {
-    this.load_invoices();
-  },
   methods: {
     ...mapActions(['load_invoices'])
+  },
+  mounted: function() {
+    this.load_invoices();
   }
 }
 </script>
