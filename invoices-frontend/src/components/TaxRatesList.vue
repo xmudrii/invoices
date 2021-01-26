@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     editTaxRate: function (item, index, event) {
-      // router.push({path: `/company/${item.id}`});
+      router.push({path: `/taxrate/${item.id}`});
     },
 
     formatTaxValue: function(value) {

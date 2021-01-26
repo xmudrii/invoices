@@ -8,6 +8,8 @@ import Companies from "@/views/Companies";
 import CompanyForm from "@/views/CompanyForm";
 import Cities from "@/views/Cities";
 import TaxRates from "@/views/TaxRates";
+import CityForm from "@/views/CityForm";
+import TaxRateForm from "@/views/TaxRateForm";
 
 Vue.use(VueRouter)
 
@@ -90,10 +92,40 @@ const routes = [
     component: Cities
   },
   {
+    path: '/city/new',
+    name: 'NewCity',
+    component: CityForm
+  },
+  {
+    path: '/city/:id',
+    name: 'EditCity',
+    component: CityForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
+  },
+  {
     path: '/taxrates',
     name: 'TaxRates',
     component: TaxRates
   },
+  {
+    path: '/taxrate/new',
+    name: 'NewTaxRate',
+    component: TaxRateForm
+  },
+  {
+    path: '/taxrate/:id',
+    name: 'EditTaxRate',
+    component: TaxRateForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
+  }
 ]
 
 const router = new VueRouter({

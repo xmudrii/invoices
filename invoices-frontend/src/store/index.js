@@ -151,8 +151,9 @@ export default new Vuex.Store({
     update_city: function (state, payload) {
       for (let r = 0; r < state.cities.length; r++) {
         if (state.cities[r].id === parseInt(payload.id)) {
-          // TODO: Implement.
-          //state.cities[r].RacunID = payload.company.RacunID;
+          state.cities[r].post_code = payload.city.post_code;
+          state.cities[r].city = payload.city.city;
+          state.cities[r].country = payload.city.country;
           break;
         }
       }
@@ -178,8 +179,8 @@ export default new Vuex.Store({
     update_taxrate: function (state, payload) {
       for (let r = 0; r < state.taxrates.length; r++) {
         if (state.taxrates[r].id === parseInt(payload.id)) {
-          // TODO: Implement.
-          //state.taxrates[r].RacunID = payload.company.RacunID;
+          state.taxrates[r].name = payload.taxrate.name;
+          state.taxrates[r].value = payload.taxrate.value;
           break;
         }
       }
@@ -298,6 +299,24 @@ export default new Vuex.Store({
       });
     },
 
+    load_tax_rate: function ({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('update_taxrate', {id: payload.id, taxrate: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
     load_cities: function ({ commit }) {
       fetch(`${this._vm.$apiEndpoint}api/cities`, { method: 'get' }).then((response) => {
         if (!response.ok)
@@ -314,6 +333,24 @@ export default new Vuex.Store({
         else {
           alert(error);
         }
+      });
+    },
+
+    load_city: function ({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('update_city', {id: payload.id, city: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
       });
     },
 
@@ -511,6 +548,142 @@ export default new Vuex.Store({
         return response.json();
       }).then((jsonData) => {
         commit('remove_company', payload.id);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    new_city: function({ commit }, city) {
+      fetch(`${this._vm.$apiEndpoint}api/cities`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: city
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('add_city', jsonData);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    change_city: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.city
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('update_city', {id: payload.id, city: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    delete_city: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, {
+        method: 'delete',
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('remove_city', payload.id);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    new_tax_rate: function({ commit }, taxrate) {
+      fetch(`${this._vm.$apiEndpoint}api/taxrates`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: taxrate
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('add_taxrate', jsonData);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    change_tax_rate: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.taxrate
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('update_taxrate', {id: payload.id, taxrate: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    delete_tax_rate: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, {
+        method: 'delete',
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('remove_taxrate', payload.id);
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {

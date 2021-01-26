@@ -29,7 +29,6 @@ export default {
     ...mapState(['companies']),
 
     company: function () {
-      // TODO: Load company.
       for (let i = 0; i < this.companies.length; i++)
         if (this.companies[i].id === parseInt(this.$route.params.id)) {
           this.load_company({id: this.companies[i].id});

@@ -28,12 +28,13 @@ export default {
       fields: [
         { key: 'post_code', label: 'Post code', tdClass: "text-right", thClass: "text-center", sortable: true },
         { key: 'city', label: 'City', tdClass: "text-left", thClass: "text-center", sortable: true },
+        { key: 'country', label: 'Country', tdClass: "text-left", thClass: "text-center", sortable: true },
       ]
     }
   },
   methods: {
     editCity: function (item, index, event) {
-      // router.push({path: `/company/${item.id}`});
+      router.push({path: `/city/${item.id}`});
     }
   }
 }
