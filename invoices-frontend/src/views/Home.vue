@@ -14,12 +14,19 @@
 <script>
 import Header from "@/components/Header";
 import InvoicesList from "@/components/InvoicesList";
+import {mapActions} from "vuex";
 
 export default {
   name: "Home",
   components: {
     Header,
     InvoicesList
+  },
+  mounted: function() {
+    this.load_invoices();
+  },
+  methods: {
+    ...mapActions(['load_invoices'])
   }
 }
 </script>

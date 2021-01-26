@@ -389,5 +389,25 @@ export default new Vuex.Store({
       });
     },
 
+    delete_invoice_item: function({ commit }, payload) {
+      // TODO: Validation
+      fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
+        method: 'delete',
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('delete_invoice_item', payload.id);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
   }
 })

@@ -2,20 +2,22 @@
   <b-container fluid>
     <b-form>
       <b-row class="mt-2">
-        <b-col sm="2" style="text-align: left">
+        <b-col class="text-left">
           <label for="description">Description:</label>
         </b-col>
-        <b-col sm="2">
-          <b-input id="description" v-model="invoice_item.description"></b-input>
+      </b-row>
+      <b-row>
+        <b-col class="text-left">
+          <b-form-textarea id="description" v-model="invoice_item.description" placeholder="Description"></b-form-textarea>
         </b-col>
       </b-row>
 
-      <b-row class="mt-2">
+      <b-row class="mt-3">
         <b-col sm="2" style="text-align: left">
           <label for="unit">Unit:</label>
         </b-col>
         <b-col sm="2">
-          <b-input id="unit" v-model="invoice_item.unit"></b-input>
+          <b-input id="unit" v-model="invoice_item.unit" class="text-left"></b-input>
         </b-col>
       </b-row>
 
@@ -24,22 +26,25 @@
           <label for="count">Count:</label>
         </b-col>
         <b-col sm="2">
-          <b-input id="count" v-model="invoice_item.count"></b-input>
+          <b-input id="count" v-model="invoice_item.count" class="text-right"></b-input>
         </b-col>
       </b-row>
 
       <b-row class="mt-2">
         <b-col sm="2" style="text-align: left">
-          <label for="price">Base price:</label>
+          <label for="price">Price:</label>
         </b-col>
         <b-col sm="2">
-          <b-input id="price" v-model="invoice_item.price"></b-input>
+          <b-input id="price" v-model="invoice_item.price" class="text-right"></b-input>
         </b-col>
       </b-row>
 
-      <b-row class="mt-3">
-        <b-col sm="12" style="text-align: left">
-          <b-form-select v-model="invoice_item.tax_rate_id">
+      <b-row class="mt-2">
+        <b-col sm="2" style="text-align: left">
+          <label for="taxrate">Tax rate:</label>
+        </b-col>
+        <b-col sm="4">
+          <b-form-select id="taxrate" v-model="invoice_item.tax_rate_id">
             <option v-for="selected in taxrates"
                     :key="selected.id"
                     :value="selected.id"
@@ -51,8 +56,11 @@
       </b-row>
 
       <b-row class="mt-5">
-        <b-col sm="3">
+        <b-col>
           <b-button variant="primary" size="lg" @click="commit">Save</b-button>
+        </b-col>
+        <b-col v-if="invoice_item.id">
+          <b-button variant="danger" size="lg" @click="deleteItem">Delete</b-button>
         </b-col>
       </b-row>
     </b-form>
@@ -89,7 +97,7 @@ export default {
       ...mapState(['taxrates']),
     },
     methods: {
-        ...mapActions(['new_invoice_item', 'change_invoice_item', 'load_tax_rates']),
+        ...mapActions(['new_invoice_item', 'change_invoice_item', 'delete_invoice_item', 'load_tax_rates']),
 
         commit: function() {
           let req = {
@@ -117,6 +125,12 @@ export default {
           // TODO: Better handle this.
           // this.invoice = {};
         },
+
+        deleteItem: function () {
+          this.delete_invoice_item({id: this.invoice_item.id}).then((response) => {
+            router.push({path: `/invoice/${this.invoice.id}`});
+          });
+        }
     }
 }
 </script>

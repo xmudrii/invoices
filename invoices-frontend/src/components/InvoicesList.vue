@@ -16,7 +16,7 @@
 
 <script>
 import router from "@/router";
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import { DateTime } from "luxon";
 
 export default {
