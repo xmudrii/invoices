@@ -21,31 +21,45 @@ const routes = [
   {
     path: '/invoice/edit/:id',
     name: 'EditInvoice',
-    component: InvoiceForm
+    component: InvoiceForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
   },
   {
     path: '/invoice/:id',
     name: 'Invoice',
-    component: Invoice
+    component: Invoice,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
   },
   {
     path: '/invoice/:invoice/item',
     name: 'NewInvoiceItem',
-    component: InvoiceItemForm
+    component: InvoiceItemForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.invoice)))
+        next('/');
+      next();
+    }
   },
   {
     path: '/invoice/:invoice/item/:id',
     name: 'EditInvoiceItem',
-    component: InvoiceItemForm
+    component: InvoiceItemForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.invoice)))
+        next('/');
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
   }
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({
