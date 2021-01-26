@@ -15,12 +15,12 @@
         </b-nav-item-dropdown>
 
         <b-nav-item-dropdown text="Cities" to="/">
-          <b-dropdown-item>Preview and edit cities</b-dropdown-item>
+          <b-dropdown-item to="/cities">Preview and edit cities</b-dropdown-item>
           <b-dropdown-item>New city</b-dropdown-item>
         </b-nav-item-dropdown>
 
         <b-nav-item-dropdown text="Tax rates" to="/">
-          <b-dropdown-item>Preview and edit tax rates</b-dropdown-item>
+          <b-dropdown-item to="/taxrates">Preview and edit tax rates</b-dropdown-item>
           <b-dropdown-item>New tax rate</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>

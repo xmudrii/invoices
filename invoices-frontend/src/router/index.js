@@ -6,6 +6,8 @@ import InvoiceForm from "@/views/InvoiceForm";
 import InvoiceItemForm from "@/views/InvoiceItemForm";
 import Companies from "@/views/Companies";
 import CompanyForm from "@/views/CompanyForm";
+import Cities from "@/views/Cities";
+import TaxRates from "@/views/TaxRates";
 
 Vue.use(VueRouter)
 
@@ -81,6 +83,16 @@ const routes = [
         next('/');
       next();
     }
+  },
+  {
+    path: '/cities',
+    name: 'Cities',
+    component: Cities
+  },
+  {
+    path: '/taxrates',
+    name: 'TaxRates',
+    component: TaxRates
   },
 ]
 
