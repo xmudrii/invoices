@@ -64,9 +64,6 @@ export default {
   computed: {
     ...mapState(['invoice_items']),
   },
-  mounted: function () {
-    this.load_invoice_items({invoice: this.invoice})
-  },
   methods: {
     ...mapActions(['load_invoice_items', 'delete_invoice']),
 
@@ -113,6 +110,9 @@ export default {
       });
       return val + "%";
     }
+  },
+  mounted: function () {
+    this.load_invoice_items({invoice: this.invoice});
   },
   data() {
     return {

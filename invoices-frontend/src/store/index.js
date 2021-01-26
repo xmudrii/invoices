@@ -187,15 +187,29 @@ export default new Vuex.Store({
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
-            // TODO: Alert umesto console.log.
-            console.log(errorMessage);
-            // alert(errorMessage);
+            alert(errorMessage);
           });
         else {
-          // TODO: Alert umesto console.log.
-          console.log(error);
-          // alert(error);
+          alert(error);
         }
+      });
+    },
+
+    load_invoice: function ({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('update_invoice', {id: payload.id, invoice: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
       });
     },
 
@@ -210,14 +224,10 @@ export default new Vuex.Store({
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
-            // TODO: Alert umesto console.log.
-            console.log(errorMessage);
-            // alert(errorMessage);
+            alert(errorMessage);
           });
         else {
-          // TODO: Alert umesto console.log.
-          console.log(error);
-          // alert(error);
+          alert(error);
         }
       });
     },
@@ -233,14 +243,10 @@ export default new Vuex.Store({
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
-            // TODO: Alert umesto console.log.
-            console.log(errorMessage);
-            // alert(errorMessage);
+            alert(errorMessage);
           });
         else {
-          // TODO: Alert umesto console.log.
-          console.log(error);
-          // alert(error);
+          alert(error);
         }
       });
     },
@@ -256,14 +262,10 @@ export default new Vuex.Store({
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
-            // TODO: Alert umesto console.log.
-            console.log(errorMessage);
-            // alert(errorMessage);
+            alert(errorMessage);
           });
         else {
-          // TODO: Alert umesto console.log.
-          console.log(error);
-          // alert(error);
+          alert(error);
         }
       });
     },
