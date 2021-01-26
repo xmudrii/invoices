@@ -104,8 +104,17 @@ export default new Vuex.Store({
     update_company: function (state, payload) {
       for (let r = 0; r < state.companies.length; r++) {
         if (state.companies[r].id === parseInt(payload.id)) {
-          // TODO: Implement.
-          //state.companies[r].RacunID = payload.company.RacunID;
+          state.companies[r].number = payload.company.number;
+          state.companies[r].name = payload.company.name;
+          state.companies[r].national_id = payload.company.national_id;
+          state.companies[r].tax_number = payload.company.tax_number;
+          state.companies[r].address = payload.company.address;
+          state.companies[r].city_id = payload.company.city_id;
+          state.companies[r].email = payload.company.email;
+          state.companies[r].created_at = payload.company.created_at;
+          state.companies[r].updated_at = payload.company.updated_at;
+          state.companies[r].city = payload.company.city;
+          state.companies[r].post_code = payload.company.post_code;
           break;
         }
       }
@@ -251,6 +260,24 @@ export default new Vuex.Store({
       });
     },
 
+    load_company: function ({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('update_company', {id: payload.id, company: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
     load_tax_rates: function ({ commit }) {
       fetch(`${this._vm.$apiEndpoint}api/taxrates`, { method: 'get' }).then((response) => {
         if (!response.ok)
@@ -259,6 +286,25 @@ export default new Vuex.Store({
         return response.json()
       }).then((jsonData) => {
         commit('set_taxrates', jsonData)
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else {
+          alert(error);
+        }
+      });
+    },
+
+    load_cities: function ({ commit }) {
+      fetch(`${this._vm.$apiEndpoint}api/cities`, { method: 'get' }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json()
+      }).then((jsonData) => {
+        commit('set_cities', jsonData)
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
@@ -405,5 +451,53 @@ export default new Vuex.Store({
           alert(error);
       });
     },
+
+    new_company: function({ commit }, company) {
+      fetch(`${this._vm.$apiEndpoint}api/companies`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: company
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('add_company', jsonData);
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    change_company: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload.company
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('update_company', {id: payload.id, company: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    }
   }
 })

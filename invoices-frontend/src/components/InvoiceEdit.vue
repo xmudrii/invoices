@@ -6,7 +6,7 @@
           <label for="number">Invoice number:</label>
         </b-col>
         <b-col sm="3">
-          <b-input id="number" v-model="invoice.number" class="text-center"></b-input>
+          <b-input id="number" v-model="invoice.number" class="text-right"></b-input>
         </b-col>
       </b-row>
       <b-row v-if="errInvoiceNumber">

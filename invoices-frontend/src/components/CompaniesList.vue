@@ -26,8 +26,8 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'number', label: 'Company No.', tdClass: "text-center", thClass: "text-center", sortable: true },
-        { key: 'national_id', label: 'National ID', tdClass: "text-center", thClass: "text-center" },
+        { key: 'number', label: 'Company No.', tdClass: "text-right", thClass: "text-center", sortable: true },
+        { key: 'national_id', label: 'National ID', tdClass: "text-right", thClass: "text-center" },
         { key: 'name', label: 'Name', tdClass: "text-left", thClass: "text-left", sortable: true },
         { key: 'address', label: 'Address', tdClass: "text-left", thClass: "text-left", sortable: true },
         { key: 'city', label: 'City', tdClass: "text-left", thClass: "text-left", sortable: true },
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     editCompany: function (item, index, event) {
-      // router.push({path: `/invoice/${item.id}`});
+      router.push({path: `/company/${item.id}`});
     }
   }
 }

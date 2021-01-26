@@ -5,18 +5,23 @@
         <b-navbar-brand to="/">Invoices App</b-navbar-brand>
 
         <b-nav-item-dropdown text="Invoices" to="/">
-          <b-dropdown-item to="/">Preview all invoices</b-dropdown-item>
+          <b-dropdown-item to="/">Preview and edit invoices</b-dropdown-item>
           <b-dropdown-item to="/invoice/new">New invoice</b-dropdown-item>
         </b-nav-item-dropdown>
 
         <b-nav-item-dropdown text="Companies" to="/">
-          <b-dropdown-item to="/companies">Preview all companies</b-dropdown-item>
-          <b-dropdown-item>New company</b-dropdown-item>
+          <b-dropdown-item to="/companies">Preview and edit companies</b-dropdown-item>
+          <b-dropdown-item to="/company/new">New company</b-dropdown-item>
         </b-nav-item-dropdown>
 
-        <b-nav-item-dropdown text="System" to="/">
-          <b-dropdown-item>Tax rates</b-dropdown-item>
-          <b-dropdown-item>Cities</b-dropdown-item>
+        <b-nav-item-dropdown text="Cities" to="/">
+          <b-dropdown-item>Preview and edit cities</b-dropdown-item>
+          <b-dropdown-item>New city</b-dropdown-item>
+        </b-nav-item-dropdown>
+
+        <b-nav-item-dropdown text="Tax rates" to="/">
+          <b-dropdown-item>Preview and edit tax rates</b-dropdown-item>
+          <b-dropdown-item>New tax rate</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>

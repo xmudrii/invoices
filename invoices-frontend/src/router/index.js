@@ -5,6 +5,7 @@ import Invoice from "@/views/Invoice";
 import InvoiceForm from "@/views/InvoiceForm";
 import InvoiceItemForm from "@/views/InvoiceItemForm";
 import Companies from "@/views/Companies";
+import CompanyForm from "@/views/CompanyForm";
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,21 @@ const routes = [
     path: '/companies',
     name: 'Companies',
     component: Companies
+  },
+  {
+    path: '/company/new',
+    name: 'NewCompany',
+    component: CompanyForm
+  },
+  {
+    path: '/company/:id',
+    name: 'EditCompany',
+    component: CompanyForm,
+    beforeEnter: (to, from, next) => {
+      if(Number.isNaN(Number.parseInt(to.params.id)))
+        next('/');
+      next();
+    }
   },
 ]
 
