@@ -271,7 +271,6 @@ export default new Vuex.Store({
     },
 
     new_invoice: function({ commit }, invoice) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices`, {
         method: 'post',
         headers: {
@@ -296,7 +295,6 @@ export default new Vuex.Store({
     },
 
     change_invoice: function({ commit }, payload) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
         method: 'put',
         headers: {
@@ -321,7 +319,6 @@ export default new Vuex.Store({
     },
 
     delete_invoice: function({ commit }, payload) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
         method: 'delete',
       }).then((response) => {
@@ -342,7 +339,6 @@ export default new Vuex.Store({
     },
 
     new_invoice_item: function({ commit }, payload) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice_id}/items`, {
         method: 'post',
         headers: {
@@ -367,7 +363,6 @@ export default new Vuex.Store({
     },
 
     change_invoice_item: function({ commit }, payload) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
         method: 'put',
         headers: {
@@ -392,7 +387,6 @@ export default new Vuex.Store({
     },
 
     delete_invoice_item: function({ commit }, payload) {
-      // TODO: Validation
       fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
         method: 'delete',
       }).then((response) => {

@@ -9,8 +9,13 @@
           <b-input id="number" v-model="invoice.number" class="text-center"></b-input>
         </b-col>
       </b-row>
+      <b-row v-if="errInvoiceNumber">
+        <b-col class="text-left text-danger">
+          Invoice number is required and must have maximum 5 characters.
+        </b-col>
+      </b-row>
 
-      <b-row class="mt-2">
+      <b-row class="mt-3">
         <b-col sm="2" class="text-left">
           <label for="date">Invoice date:</label>
         </b-col>
@@ -63,6 +68,11 @@
           </b-form-select>
         </b-col>
       </b-row>
+      <b-row v-if="errCompany">
+        <b-col class="text-left text-danger">
+          Company is required.
+        </b-col>
+      </b-row>
 
       <b-row class="mt-3">
         <b-col sm="12" class="text-left">
@@ -102,6 +112,8 @@ export default {
         newInvoice: {
           id: ''
         },
+        errInvoiceNumber: false,
+        errCompany: false
       }
     },
     mounted: function () {
@@ -114,7 +126,23 @@ export default {
     methods: {
         ...mapActions(['new_invoice', 'change_invoice', 'load_companies']),
 
-        commit: function() {
+        commit: function () {
+          let err = false;
+          if(this.invoice.number === undefined || this.invoice.number.length === 0 || this.invoice.number.length > 5) {
+            this.errInvoiceNumber = true;
+            err = true;
+          } else {
+            this.errInvoiceNumber = false;
+          }
+          if(this.invoice.company_id === undefined) {
+            this.errCompany = true;
+            err = true;
+          } else {
+            this.errCompany = false;
+          }
+          if(err)
+            return;
+
           let req = {
             number: this.invoice.number,
             date: this.invoice.date,
