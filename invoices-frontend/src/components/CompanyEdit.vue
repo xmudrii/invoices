@@ -112,7 +112,9 @@
         <b-col>
           <b-button variant="primary" size="lg" @click="commit">Save</b-button>
         </b-col>
-        <b-col></b-col>
+        <b-col>
+          <b-button variant="danger" size="lg" @click="deleteCompany" v-if="company.id">Delete company</b-button>
+        </b-col>
       </b-row>
     </b-form>
   </b-container>
@@ -152,7 +154,7 @@ export default {
       ...mapState(['cities']),
     },
     methods: {
-        ...mapActions(['new_company', 'change_company', 'load_cities']),
+        ...mapActions(['new_company', 'change_company', 'delete_company', 'load_cities']),
 
         commit: function () {
           let err = false;
@@ -221,8 +223,14 @@ export default {
           else
             this.change_company({id: this.$route.params.id, company: r});
 
-          router.push({path: `/companies`});
+          router.push({path: '/companies'});
         },
+
+        deleteCompany: function () {
+          this.delete_company({id: this.company.id}).then(() => {
+            router.push({path: '/companies'});
+          });
+        }
     }
 }
 </script>

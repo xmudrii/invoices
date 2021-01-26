@@ -38,6 +38,7 @@ export default new Vuex.Store({
           state.invoices[r].date_from = payload.invoice.date_from;
           state.invoices[r].date_to = payload.invoice.date_to;
           state.invoices[r].company_id = payload.invoice.company_id;
+          state.invoices[r].company_name = payload.invoice.company_name;
           state.invoices[r].remarks = payload.invoice.remarks;
           state.invoices[r].created_at = payload.invoice.created_at;
           state.invoices[r].updated_at = payload.invoice.updated_at;
@@ -490,6 +491,26 @@ export default new Vuex.Store({
         return response.json();
       }).then((jsonData) => {
         commit('update_company', {id: payload.id, company: jsonData});
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    delete_company: function({ commit }, payload) {
+      fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, {
+        method: 'delete',
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response.json();
+      }).then((jsonData) => {
+        commit('remove_company', payload.id);
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {

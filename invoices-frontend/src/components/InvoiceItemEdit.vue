@@ -186,13 +186,10 @@ export default {
             this.change_invoice_item({id: this.$route.params.id, invoice_item: r}).then((response) => {
               router.push({path: `/invoice/${this.invoice.id}`});
             });
-
-          // TODO: Better handle this.
-          // this.invoice = {};
         },
 
         deleteItem: function () {
-          this.delete_invoice_item({id: this.invoice_item.id}).then((response) => {
+          this.delete_invoice_item({id: this.invoice_item.id}).then(() => {
             router.push({path: `/invoice/${this.invoice.id}`});
           });
         }

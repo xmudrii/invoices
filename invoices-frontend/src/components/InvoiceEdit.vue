@@ -162,8 +162,6 @@ export default {
           else
             this.change_invoice({id: this.$route.params.id, invoice: r});
 
-          // TODO: Better handle this.
-          // this.invoice = {};
           if(this.invoice.id === undefined)
             router.push({path: `/`});
           else
