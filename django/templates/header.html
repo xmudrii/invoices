@@ -1,0 +1,14 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark d-print-none" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="{% url 'invoices_app:invoices' %}">
+        <img src="{% static 'img/invoice.png' %}" width="32" height="32" class="d-inline-block align-top" alt="logo" style="margin-left: 10px;"/>
+        Invoices DataApp
+    </a>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'invoices_app:invoices' %}">Data</a>
+        </li>
+    </ul>
+</nav>

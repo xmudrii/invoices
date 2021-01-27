@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,6 +22,5 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')),
     # TODO: Mislim da ne treba zato sto nemamo authn/authz
     # path('accounts/register/', views.register, name='register'),
-    # TODO: Ovo ce trebati kasnije
-    # path('', include('invoices_app.urls'))
+    path('', include('invoices_app.urls'))
 ]

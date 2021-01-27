@@ -1,0 +1,10 @@
+{% extends 'master.html' %}
+
+{% block content %}
+    <h3>Invoices DataApp</h3>
+    <!-- Invoices filtering and aggregation -->
+    <form class="row g-3" method="post">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+{% endblock %}

@@ -19,6 +19,16 @@ class City(models.Model):
         db_table = 'sys_city'
 
 
+class TaxRate(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=15)
+    value = models.DecimalField(max_digits=4, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_tax_rate'
+
+
 class MyCompany(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -33,16 +43,6 @@ class MyCompany(models.Model):
     class Meta:
         managed = False
         db_table = 'sys_company'
-
-
-class TaxRate(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=15)
-    value = models.DecimalField(max_digits=4, decimal_places=2)
-
-    class Meta:
-        managed = False
-        db_table = 'sys_tax_rate'
 
 
 class Company(models.Model):
@@ -92,3 +92,18 @@ class InvoiceItem(models.Model):
     class Meta:
         managed = False
         db_table = 'invoice_item'
+
+
+class User(models.Model):
+    id = models.IntegerField(primary_key=True)
+    username = models.CharField(unique=True, max_length=30)
+    password = models.CharField(max_length=100)
+    email = models.CharField(unique=True, max_length=50)
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+    is_admin = models.IntegerField()
+    is_active = models.IntegerField(default=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sys_user'

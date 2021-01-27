@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from .forms import InvoicesForm
 
-# Create your views here.
+
+def index(req):
+    invoices_form = InvoicesForm()
+    return render(req, 'invoices.html', {'form': invoices_form})
