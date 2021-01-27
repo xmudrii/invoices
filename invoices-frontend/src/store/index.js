@@ -724,6 +724,35 @@ export default new Vuex.Store({
         else
           alert(error);
       });
+    },
+
+    login: function ({ commit }, payload) {
+      console.log(`${this._vm.$apiEndpoint}login`);
+      console.log(payload);
+      fetch(`${this._vm.$apiEndpoint}login`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        console.log(response);
+        return response;
+      }).then((resp) => {
+        // TODO: Implementation.
+        // There's a problem with CORS that might be solved by building the app and moving
+        // it to the backend.
+      }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
     }
   }
 })

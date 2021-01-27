@@ -10,6 +10,7 @@ import Cities from "@/views/Cities";
 import TaxRates from "@/views/TaxRates";
 import CityForm from "@/views/CityForm";
 import TaxRateForm from "@/views/TaxRateForm";
+import LoginForm from "@/views/LoginForm";
 
 Vue.use(VueRouter)
 
@@ -125,7 +126,12 @@ const routes = [
         next('/');
       next();
     }
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginForm
+  },
 ]
 
 const router = new VueRouter({
