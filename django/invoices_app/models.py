@@ -65,9 +65,9 @@ class Company(models.Model):
 class Invoice(models.Model):
     id = models.IntegerField(primary_key=True)
     number = models.CharField(max_length=5, db_index=True, unique=True)
-    date = models.DateTimeField(auto_now_add=True)
-    date_from = models.DateTimeField(auto_now_add=True)
-    date_to = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
+    date_from = models.DateField(auto_now_add=True)
+    date_to = models.DateField(auto_now_add=True)
     company = models.ForeignKey(Company, models.RESTRICT)
     remarks = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
