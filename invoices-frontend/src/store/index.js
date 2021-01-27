@@ -10,7 +10,8 @@ export default new Vuex.Store({
     companies: [],
     mycompany: [],
     cities: [],
-    taxrates: []
+    taxrates: [],
+    users: []
   },
   mutations: {
     /**
@@ -185,6 +186,37 @@ export default new Vuex.Store({
         }
       }
     },
+
+    /**
+     * Users mutations
+     */
+    set_users: function (state, users) {
+      state.users = users;
+    },
+    add_user: function (state, user) {
+      state.users.push(user);
+    },
+    remove_user: function (state, id) {
+      for (let r = 0; r < state.users.length; r++) {
+        if (state.users[r].id === id) {
+          state.users.splice(r, 1);
+          break;
+        }
+      }
+    },
+    update_user: function (state, payload) {
+      for (let r = 0; r < state.users.length; r++) {
+        if (state.users[r].id === parseInt(payload.id)) {
+          state.users[r].username = payload.user.username;
+          state.users[r].email = payload.user.email;
+          state.users[r].name = payload.user.name;
+          state.users[r].surname = payload.user.surname;
+          state.users[r].is_admin = payload.user.is_admin;
+          state.users[r].is_active = payload.user.is_active;
+          break;
+        }
+      }
+    }
   },
   actions: {
     load_invoices: function ({ commit }) {
