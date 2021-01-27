@@ -158,14 +158,13 @@ export default {
           });
 
           if (!this.$route.params.id)
-            this.new_invoice(r);
+            this.new_invoice(r).then(() => {
+              router.push({path: `/`});
+            });
           else
-            this.change_invoice({id: this.$route.params.id, invoice: r});
-
-          if(this.invoice.id === undefined)
-            router.push({path: `/`});
-          else
-            router.push({path: `/invoice/${this.invoice.id}`});
+            this.change_invoice({id: this.$route.params.id, invoice: r}).then(() => {
+              router.push({path: `/invoice/${this.invoice.id}`});
+            });
         },
     }
 }

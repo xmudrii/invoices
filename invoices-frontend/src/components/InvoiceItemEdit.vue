@@ -179,11 +179,11 @@ export default {
           });
 
           if (!this.$route.params.id)
-            this.new_invoice_item({invoice_id: this.invoice.id, invoice_item: r}).then((response) => {
+            this.new_invoice_item({invoice_id: this.invoice.id, invoice_item: r}).then(() => {
               router.push({path: `/invoice/${this.invoice.id}`});
             });
           else
-            this.change_invoice_item({id: this.$route.params.id, invoice_item: r}).then((response) => {
+            this.change_invoice_item({id: this.$route.params.id, invoice_item: r}).then(() => {
               router.push({path: `/invoice/${this.invoice.id}`});
             });
         },

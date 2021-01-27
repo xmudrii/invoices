@@ -219,11 +219,13 @@ export default {
           });
 
           if (!this.$route.params.id)
-            this.new_company(r);
+            this.new_company(r).then(() => {
+              router.push({path: '/companies'});
+            });
           else
-            this.change_company({id: this.$route.params.id, company: r});
-
-          router.push({path: '/companies'});
+            this.change_company({id: this.$route.params.id, company: r}).then(() => {
+              router.push({path: '/companies'});
+            });
         },
 
         deleteCompany: function () {
