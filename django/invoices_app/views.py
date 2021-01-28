@@ -6,25 +6,31 @@ from .models import *
 
 
 def invoices(req):
+    inv = Invoice.objects.all()
+    inv = inv.annotate(
+        net_price=Coalesce(
+            Sum(F('invoiceitem__count') * F('invoiceitem__price')),
+            Value(0)
+        ),
+        tax_total=Coalesce(
+            Sum(F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
+            Value(0)
+        ),
+        total=Coalesce(
+            Sum(F('invoiceitem__count') * F('invoiceitem__price')) + Sum(
+                F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
+            Value(0)
+        ),
+    )
+
+    sum_net_price = inv.aggregate(sum_net_price=Sum('net_price'))
+    sum_tax_total = inv.aggregate(sum_tax_total=Sum('tax_total'))
+    sum_total = inv.aggregate(sum_total=Sum('total'))
+
     if req.method == 'POST':
         invoices_form = InvoicesForm(req.POST)
 
         if invoices_form.is_valid():
-            inv = Invoice.objects.all()
-            inv = inv.annotate(
-                net_price=Coalesce(
-                    Sum(F('invoiceitem__count') * F('invoiceitem__price')),
-                    Value(0)
-                ),
-                tax_total=Coalesce(
-                    Sum(F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
-                    Value(0)
-                ),
-                total=Coalesce(
-                    Sum(F('invoiceitem__count') * F('invoiceitem__price'))+Sum(F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
-                    Value(0)
-                ),
-            )
             print(inv.query)
             # TODO: Proveri da li je date_from manji od date_to i obrnuto, isto i za total.
             if invoices_form.cleaned_data['date_from']:
@@ -40,9 +46,21 @@ def invoices(req):
             if invoices_form.cleaned_data['total_to']:
                 inv = inv.filter(total__lte=invoices_form.cleaned_data['total_to'])
 
-            return render(req, 'invoices.html', {'form': invoices_form, 'invoices': inv})
+            return render(req, 'invoices.html', {
+                'form': invoices_form,
+                'invoices': inv,
+                'sum_net_price': sum_net_price,
+                'sum_tax_total': sum_tax_total,
+                'sum_total': sum_total
+            })
         else:
             return render(req, 'invoices.html', {'form': invoices_form})
     else:
         invoices_form = InvoicesForm()
-        return render(req, 'invoices.html', {'form': invoices_form})
+        return render(req, 'invoices.html', {
+            'form': invoices_form,
+            'invoices': inv,
+            'sum_net_price': sum_net_price,
+            'sum_tax_total': sum_tax_total,
+            'sum_total': sum_total
+        })

@@ -1,4 +1,5 @@
 {% extends 'master.html' %}
+{% load humanize %}
 
 {% block content %}
     <!-- Invoices filtering and aggregation -->
@@ -111,37 +112,43 @@
         </div>
     </form>
     <!-- Invoices preview table -->
-    {% if invoices %}
-        <table class="table">
-            <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Company</th>
+                <th scope="col">City</th>
+                <th scope="col">Net Price</th>
+                <th scope="col">Tax Total</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Net Price</th>
-                    <th scope="col">Tax Total</th>
-                    <th scope="col">Total</th>
+                    <th scope="row">{{ invoice.number }}</th>
+                    <td>{{ invoice.date|date:'d.m.Y' }}</td>
+                    <td class="text-start">{{ invoice.company.name }}</td>
+                    <td class="text-start">{{ invoice.company.city.city }}</td>
+                    <td class="text-end">{{ invoice.net_price | floatformat:2 | intcomma }}</td>
+                    <td class="text-end">{{ invoice.tax_total | floatformat:2 | intcomma }}</td>
+                    <td class="text-end">{{ invoice.total | floatformat:2 | intcomma }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for invoice in invoices %}
-                    <tr>
-                        <th scope="row">{{ invoice.number }}</th>
-                        <td>{{ invoice.date|date:'d.m.Y' }}</td>
-                        <td class="text-start">{{ invoice.company.name }}</td>
-                        <td class="text-start">{{ invoice.company.city.city }}</td>
-                        <td class="text-end">{{ invoice.net_price }}</td>
-                        <td class="text-end">{{ invoice.tax_total }}</td>
-                        <td class="text-end">{{ invoice.total }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <th colspan="7">No invoices found</th>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+            {% empty %}
+                <tr>
+                    <th colspan="7">No invoices found</th>
+                </tr>
+            {% endfor %}
+            {% if invoices %}
+                <tr>
+                    <th scope="row" class="text-start" colspan="4"><b>Grand total</b></th>
+                    <td class="text-end"><b>{{ sum_net_price.sum_net_price | floatformat:2 | intcomma }}</b></td>
+                    <td class="text-end"><b>{{ sum_tax_total.sum_tax_total | floatformat:2 | intcomma }}</b></td>
+                    <td class="text-end"><b>{{ sum_total.sum_total | floatformat:2 | intcomma }}</b></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
 
 {% endblock %}
