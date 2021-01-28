@@ -30,9 +30,6 @@ DEBUG = SETTINGS_DEBUG
 ALLOWED_HOSTS = SETTINGS_ALLOWED_HOSTS
 
 
-# TODO: Mislim da ovo ne treba posto nema authn/authz
-# LOGIN_REDIRECT_URL = '/invoices'
-
 # Application definition
 
 INSTALLED_APPS = [

@@ -36,6 +36,11 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog komintenta
 route.get('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
         'FROM `company` ' +
         'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +
@@ -100,6 +105,10 @@ route.post('/', (req, res) => {
 // Azuriranje komintenta
 route.put('/:id', (req, res) => {
     // Validacija unosa
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
     // Object decomposition - dohvatanje unosa
     let { error } = Joi.validate(req.body, sema);
 
@@ -146,6 +155,11 @@ route.put('/:id', (req, res) => {
 
 // Brisanje komintenta
 route.delete('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
         'FROM `company` ' +
         'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id` ' +

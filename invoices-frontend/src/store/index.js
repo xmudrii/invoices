@@ -8,7 +8,6 @@ export default new Vuex.Store({
     invoices: [],
     invoice_items: [],
     companies: [],
-    mycompany: [],
     cities: [],
     taxrates: [],
     users: []
@@ -123,16 +122,6 @@ export default new Vuex.Store({
     },
 
     /**
-     * My Commpany mutations
-     */
-    set_mycompany: function (state, mycompany) {
-      state.mycompany = mycompany;
-    },
-    update_mycompany: function (state, payload) {
-      // TODO: Implement.
-    },
-
-    /**
      * Cities mutations
      */
     set_cities: function (state, cities) {
@@ -238,24 +227,6 @@ export default new Vuex.Store({
       });
     },
 
-    load_invoice: function ({ commit }, payload) {
-      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, { method: 'get' }).then((response) => {
-        if (!response.ok)
-          throw response;
-
-        return response.json()
-      }).then((jsonData) => {
-        commit('update_invoice', {id: payload.id, invoice: jsonData});
-      }).catch((error) => {
-        if (typeof error.text === 'function')
-          error.text().then((errorMessage) => {
-            alert(errorMessage);
-          });
-        else
-          alert(error);
-      });
-    },
-
     load_invoice_items: function ({ commit }, payload) {
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice.id}/items`, { method: 'get' }).then((response) => {
         if (!response.ok)
@@ -294,24 +265,6 @@ export default new Vuex.Store({
       });
     },
 
-    load_company: function ({ commit }, payload) {
-      fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, { method: 'get' }).then((response) => {
-        if (!response.ok)
-          throw response;
-
-        return response.json()
-      }).then((jsonData) => {
-        commit('update_company', {id: payload.id, company: jsonData});
-      }).catch((error) => {
-        if (typeof error.text === 'function')
-          error.text().then((errorMessage) => {
-            alert(errorMessage);
-          });
-        else
-          alert(error);
-      });
-    },
-
     load_tax_rates: function ({ commit }) {
       fetch(`${this._vm.$apiEndpoint}api/taxrates`, { method: 'get' }).then((response) => {
         if (!response.ok)
@@ -331,24 +284,6 @@ export default new Vuex.Store({
       });
     },
 
-    load_tax_rate: function ({ commit }, payload) {
-      fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, { method: 'get' }).then((response) => {
-        if (!response.ok)
-          throw response;
-
-        return response.json()
-      }).then((jsonData) => {
-        commit('update_taxrate', {id: payload.id, taxrate: jsonData});
-      }).catch((error) => {
-        if (typeof error.text === 'function')
-          error.text().then((errorMessage) => {
-            alert(errorMessage);
-          });
-        else
-          alert(error);
-      });
-    },
-
     load_cities: function ({ commit }) {
       fetch(`${this._vm.$apiEndpoint}api/cities`, { method: 'get' }).then((response) => {
         if (!response.ok)
@@ -365,24 +300,6 @@ export default new Vuex.Store({
         else {
           alert(error);
         }
-      });
-    },
-
-    load_city: function ({ commit }, payload) {
-      fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, { method: 'get' }).then((response) => {
-        if (!response.ok)
-          throw response;
-
-        return response.json()
-      }).then((jsonData) => {
-        commit('update_city', {id: payload.id, city: jsonData});
-      }).catch((error) => {
-        if (typeof error.text === 'function')
-          error.text().then((errorMessage) => {
-            alert(errorMessage);
-          });
-        else
-          alert(error);
       });
     },
 

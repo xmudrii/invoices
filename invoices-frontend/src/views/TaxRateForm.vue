@@ -22,18 +22,13 @@ export default {
     Header,
     TaxRateEdit
   },
-  methods: {
-    ...mapActions(['load_tax_rate'])
-  },
   computed: {
     ...mapState(['taxrates']),
 
     taxrate: function () {
       for (let i = 0; i < this.taxrates.length; i++)
-        if (this.taxrates[i].id === parseInt(this.$route.params.id)) {
-          // this.load_tax_rate({id: this.taxrates[i].id});
+        if (this.taxrates[i].id === parseInt(this.$route.params.id))
           return this.taxrates[i];
-        }
     }
   },
 }

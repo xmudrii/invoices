@@ -84,9 +84,7 @@ export default {
             return value;
           });
 
-          this.login(r).then(() => {
-            // TODO: Implement.
-          });
+          this.login(r);
         }
     }
 }

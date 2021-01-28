@@ -31,8 +31,6 @@ def invoices(req):
         invoices_form = InvoicesForm(req.POST)
 
         if invoices_form.is_valid():
-            print(inv.query)
-            # TODO: Proveri da li je date_from manji od date_to i obrnuto, isto i za total.
             if invoices_form.cleaned_data['date_from']:
                 inv = inv.filter(date__gte=invoices_form.cleaned_data['date_from'])
             if invoices_form.cleaned_data['date_to']:

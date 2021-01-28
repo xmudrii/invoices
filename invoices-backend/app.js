@@ -14,7 +14,6 @@ const auth = require('./auth/routes')
 
 // Rute za aplikaciju
 const cities = require('./routes/cities');
-const mycompany = require('./routes/mycompany');
 const companies = require('./routes/companies');
 const taxrates = require('./routes/taxrates');
 const invoices = require('./routes/invoices');
@@ -33,7 +32,6 @@ app.use(function(req, res, next) {
 // Registracija ruta
 app.use('/', auth);
 app.use('/api/cities', cities);
-app.use('/api/mycompany', mycompany);
 app.use('/api/companies', companies);
 app.use('/api/taxrates', taxrates);
 app.use('/api/invoices', invoices);

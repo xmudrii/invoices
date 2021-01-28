@@ -22,18 +22,13 @@ export default {
     Header,
     InvoiceView
   },
-  methods: {
-    ...mapActions(['load_invoice'])
-  },
   computed: {
     ...mapState(['invoices']),
 
     invoice: function () {
       for (let i = 0; i < this.invoices.length; i++)
-        if (this.invoices[i].id === parseInt(this.$route.params.id)) {
-          // this.load_invoice({id: this.invoices[i].id});
+        if (this.invoices[i].id === parseInt(this.$route.params.id))
           return this.invoices[i];
-        }
     }
   }
 }

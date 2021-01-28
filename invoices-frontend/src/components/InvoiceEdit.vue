@@ -128,7 +128,7 @@ export default {
 
         commit: function () {
           let err = false;
-          if(this.invoice.number === undefined || this.invoice.number.length === 0 || this.invoice.number.length > 5) {
+          if(this.invoice.number === undefined || this.invoice.number.length === 0 || this.invoice.number.length !== 5) {
             this.errInvoiceNumber = true;
             err = true;
           } else {

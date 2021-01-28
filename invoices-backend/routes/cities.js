@@ -29,6 +29,11 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacnog grada
 route.get('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'select * from sys_city where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
@@ -83,6 +88,10 @@ route.post('/', (req, res) => {
 // Azuriranje grada
 route.put('/:id', (req, res) => {
     // Validacija unosa
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
     // Object decomposition - dohvatanje unosa
     let { error } = Joi.validate(req.body, sema);
 
@@ -122,6 +131,11 @@ route.put('/:id', (req, res) => {
 
 // Brisanje grada
 route.delete('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'select * from sys_city where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 

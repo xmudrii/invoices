@@ -28,6 +28,11 @@ route.get('/', (req, res) => {
 
 // Prikaz pojedinacke poreske stope
 route.get('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'select * from sys_tax_rate where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 
@@ -81,6 +86,10 @@ route.post('/', (req, res) => {
 // Azuriranje poreske stope
 route.put('/:id', (req, res) => {
     // Validacija unosa
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
     // Object decomposition - dohvatanje unosa
     let { error } = Joi.validate(req.body, sema);
 
@@ -119,6 +128,11 @@ route.put('/:id', (req, res) => {
 
 // Brisanje poreske stope
 route.delete('/:id', (req, res) => {
+    if(isNaN(req.params.id)) {
+        res.status(400).send('id must be a number');
+        return;
+    }
+
     let query = 'select * from sys_tax_rate where id=?;';
     let formatted = mysql.format(query, [req.params.id]);
 

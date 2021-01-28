@@ -18,9 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # TODO: Mislim da ne treba zato sto nemamo authn/authz
-    # path('accounts/', include('django.contrib.auth.urls')),
-    # TODO: Mislim da ne treba zato sto nemamo authn/authz
-    # path('accounts/register/', views.register, name='register'),
     path('', include('invoices_app.urls'))
 ]
