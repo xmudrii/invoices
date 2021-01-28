@@ -70,7 +70,7 @@ def invoices(req):
         count_invoices = inv.aggregate(count_invoices=Count('*'))
         avg_invoices = inv.aggregate(avg_invoices=Avg('total'))
         min_invoice = inv.aggregate(min_invoice=Min('total'))
-        max_invoice = inv.aggregate(max_invoices=Max('total'))
+        max_invoice = inv.aggregate(max_invoice=Max('total'))
 
         return render(req, 'invoices.html', {
             'form': invoices_form,
