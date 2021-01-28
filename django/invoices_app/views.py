@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import F, Sum, Value
+from django.db.models import F, Sum, Value, Count, Avg
 from django.db.models.functions import Coalesce
 from .forms import InvoicesForm
 from .models import *
@@ -23,10 +23,6 @@ def invoices(req):
         ),
     )
 
-    sum_net_price = inv.aggregate(sum_net_price=Sum('net_price'))
-    sum_tax_total = inv.aggregate(sum_tax_total=Sum('tax_total'))
-    sum_total = inv.aggregate(sum_total=Sum('total'))
-
     if req.method == 'POST':
         invoices_form = InvoicesForm(req.POST)
 
@@ -44,21 +40,38 @@ def invoices(req):
             if invoices_form.cleaned_data['total_to']:
                 inv = inv.filter(total__lte=invoices_form.cleaned_data['total_to'])
 
+            sum_net_price = inv.aggregate(sum_net_price=Sum('net_price'))
+            sum_tax_total = inv.aggregate(sum_tax_total=Sum('tax_total'))
+            sum_total = inv.aggregate(sum_total=Sum('total'))
+            count_invoices = inv.aggregate(count_invoices=Count('*'))
+            avg_invoices = inv.aggregate(avg_invoices=Avg('total'))
+
             return render(req, 'invoices.html', {
                 'form': invoices_form,
                 'invoices': inv,
                 'sum_net_price': sum_net_price,
                 'sum_tax_total': sum_tax_total,
-                'sum_total': sum_total
+                'sum_total': sum_total,
+                'count_invoices': count_invoices,
+                'avg_invoices': avg_invoices
             })
         else:
             return render(req, 'invoices.html', {'form': invoices_form})
     else:
         invoices_form = InvoicesForm()
+
+        sum_net_price = inv.aggregate(sum_net_price=Sum('net_price'))
+        sum_tax_total = inv.aggregate(sum_tax_total=Sum('tax_total'))
+        sum_total = inv.aggregate(sum_total=Sum('total'))
+        count_invoices = inv.aggregate(count_invoices=Count('*'))
+        avg_invoices = inv.aggregate(avg_invoices=Avg('total'))
+
         return render(req, 'invoices.html', {
             'form': invoices_form,
             'invoices': inv,
             'sum_net_price': sum_net_price,
             'sum_tax_total': sum_tax_total,
-            'sum_total': sum_total
+            'sum_total': sum_total,
+            'count_invoices': count_invoices,
+            'avg_invoices': avg_invoices
         })

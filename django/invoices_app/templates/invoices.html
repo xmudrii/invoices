@@ -147,6 +147,14 @@
                     <td class="text-end"><b>{{ sum_tax_total.sum_tax_total | floatformat:2 | intcomma }}</b></td>
                     <td class="text-end"><b>{{ sum_total.sum_total | floatformat:2 | intcomma }}</b></td>
                 </tr>
+                <tr>
+                    <th scope="row" class="text-start" colspan="6"><b>Count</b></th>
+                    <td class="text-end"><b>{{ count_invoices.count_invoices | intcomma }}</b></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-start" colspan="6"><b>Average invoice grand total</b></th>
+                    <td class="text-end"><b>{{ avg_invoices.avg_invoices | floatformat:2 | intcomma }}</b></td>
+                </tr>
             {% endif %}
         </tbody>
     </table>
