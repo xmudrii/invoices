@@ -110,6 +110,38 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
-
+    <!-- Invoices preview table -->
+    {% if invoices %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">City</th>
+                    <th scope="col">Net Price</th>
+                    <th scope="col">Tax Total</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in invoices %}
+                    <tr>
+                        <th scope="row">{{ invoice.number }}</th>
+                        <td>{{ invoice.date|date:'d.m.Y' }}</td>
+                        <td class="text-start">{{ invoice.company.name }}</td>
+                        <td class="text-start">{{ invoice.company.city.city }}</td>
+                        <td class="text-end">{{ invoice.net_price }}</td>
+                        <td class="text-end">{{ invoice.tax_total }}</td>
+                        <td class="text-end">{{ invoice.total }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <th colspan="7">No invoices found</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 
 {% endblock %}

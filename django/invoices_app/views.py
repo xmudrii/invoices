@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.db.models import F, Sum, Value
+from django.db.models.functions import Coalesce
 from .forms import InvoicesForm
 from .models import *
 
@@ -9,6 +11,22 @@ def invoices(req):
 
         if invoices_form.is_valid():
             inv = Invoice.objects.all()
+            inv = inv.annotate(
+                net_price=Coalesce(
+                    Sum(F('invoiceitem__count') * F('invoiceitem__price')),
+                    Value(0)
+                ),
+                tax_total=Coalesce(
+                    Sum(F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
+                    Value(0)
+                ),
+                total=Coalesce(
+                    Sum(F('invoiceitem__count') * F('invoiceitem__price'))+Sum(F('invoiceitem__count') * F('invoiceitem__price') * F('invoiceitem__tax_rate__value') / 100),
+                    Value(0)
+                ),
+            )
+            print(inv.query)
+            # TODO: Proveri da li je date_from manji od date_to i obrnuto, isto i za total.
             if invoices_form.cleaned_data['date_from']:
                 inv = inv.filter(date__gte=invoices_form.cleaned_data['date_from'])
             if invoices_form.cleaned_data['date_to']:
@@ -16,15 +34,13 @@ def invoices(req):
             if invoices_form.cleaned_data['company']:
                 inv = inv.filter(company=invoices_form.cleaned_data['company'])
             if invoices_form.cleaned_data['city']:
-                inv = inv.filter(city=invoices_form.cleaned_data['city'])
-            # if invoices_form.cleaned_data['total_from']:
-            #     inv.filter(total__gte=invoices_form.cleaned_data['total_from'])
-            # if invoices_form.cleaned_data['total_to']:
-            #     inv.filter(total__=invoices_form.cleaned_data['city'])
+                inv = inv.filter(company__city=invoices_form.cleaned_data['city'])
+            if invoices_form.cleaned_data['total_from']:
+                inv = inv.filter(total__gte=invoices_form.cleaned_data['total_from'])
+            if invoices_form.cleaned_data['total_to']:
+                inv = inv.filter(total__lte=invoices_form.cleaned_data['total_to'])
 
-            print(inv)
-
-            return render(req, 'invoices.html', {'form': invoices_form})
+            return render(req, 'invoices.html', {'form': invoices_form, 'invoices': inv})
         else:
             return render(req, 'invoices.html', {'form': invoices_form})
     else:
