@@ -50,6 +50,11 @@
           ></b-form-datepicker>
         </b-col>
       </b-row>
+      <b-row v-if="errDateFrom">
+        <b-col class="text-left text-danger">
+          Date from must be lower or equal than date to.
+        </b-col>
+      </b-row>
 
       <b-row class="mt-3">
         <b-col sm="12" class="text-left">
@@ -113,6 +118,7 @@ export default {
           id: ''
         },
         errInvoiceNumber: false,
+        errDateFrom: false,
         errCompany: false
       }
     },
@@ -139,6 +145,18 @@ export default {
             err = true;
           } else {
             this.errCompany = false;
+          }
+          if(this.invoice.date_from !== undefined && this.invoice.date_to !== undefined) {
+            const date_from = Date.parse(this.invoice.date_from);
+            const date_to = Date.parse(this.invoice.date_to);
+            if(date_from > date_to) {
+              this.errDateFrom = true;
+              err = true;
+            } else {
+              this.errDateFrom = false;
+            }
+          } else {
+            this.errDateFrom = false;
           }
           if(err)
             return;

@@ -69,7 +69,7 @@
                     :key="selected.id"
                     :value="selected.id"
             >
-              {{ selected.name }} - {{ selected.value }}%
+              {{ selected.value }}% - {{ selected.name }}
             </option>
           </b-form-select>
         </b-col>
