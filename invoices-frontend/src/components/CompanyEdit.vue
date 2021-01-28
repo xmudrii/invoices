@@ -11,7 +11,7 @@
       </b-row>
       <b-row v-if="errCompanyNumber">
         <b-col class="text-left text-danger">
-          Company number is required and must have maximum 4 characters.
+          Company number must have maximum 4 characters.
         </b-col>
       </b-row>
 
@@ -158,7 +158,7 @@ export default {
 
         commit: function () {
           let err = false;
-          if(this.company.number === undefined || this.company.number.length === 0 || this.company.number.length > 4) {
+          if(this.company.number !== undefined && (this.company.number.length === 0 || this.company.number.length > 4)) {
             this.errCompanyNumber = true;
             err = true;
           } else {

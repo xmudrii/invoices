@@ -11,7 +11,7 @@
       </b-row>
       <b-row v-if="errInvoiceNumber">
         <b-col class="text-left text-danger">
-          Invoice number is required and must have maximum 5 characters.
+          Invoice number must have maximum 5 characters.
         </b-col>
       </b-row>
 
@@ -134,7 +134,7 @@ export default {
 
         commit: function () {
           let err = false;
-          if(this.invoice.number === undefined || this.invoice.number.length === 0 || this.invoice.number.length !== 5) {
+          if(this.invoice.number !== undefined && (this.invoice.number.length === 0 || this.invoice.number.length !== 5)) {
             this.errInvoiceNumber = true;
             err = true;
           } else {
