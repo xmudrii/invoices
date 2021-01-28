@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.db.models import F, Sum, Value, Count, Avg
+from django.db.models import F, Sum, Value, Count, Avg, Min, Max
 from django.db.models.functions import Coalesce
 from .forms import InvoicesForm
 from .models import *
@@ -45,6 +45,8 @@ def invoices(req):
             sum_total = inv.aggregate(sum_total=Sum('total'))
             count_invoices = inv.aggregate(count_invoices=Count('*'))
             avg_invoices = inv.aggregate(avg_invoices=Avg('total'))
+            min_invoice = inv.aggregate(min_invoice=Min('total'))
+            max_invoice = inv.aggregate(max_invoice=Max('total'))
 
             return render(req, 'invoices.html', {
                 'form': invoices_form,
@@ -53,7 +55,9 @@ def invoices(req):
                 'sum_tax_total': sum_tax_total,
                 'sum_total': sum_total,
                 'count_invoices': count_invoices,
-                'avg_invoices': avg_invoices
+                'avg_invoices': avg_invoices,
+                'min_invoice': min_invoice,
+                'max_invoice': max_invoice
             })
         else:
             return render(req, 'invoices.html', {'form': invoices_form})
@@ -65,6 +69,8 @@ def invoices(req):
         sum_total = inv.aggregate(sum_total=Sum('total'))
         count_invoices = inv.aggregate(count_invoices=Count('*'))
         avg_invoices = inv.aggregate(avg_invoices=Avg('total'))
+        min_invoice = inv.aggregate(min_invoice=Min('total'))
+        max_invoice = inv.aggregate(max_invoices=Max('total'))
 
         return render(req, 'invoices.html', {
             'form': invoices_form,
@@ -73,5 +79,7 @@ def invoices(req):
             'sum_tax_total': sum_tax_total,
             'sum_total': sum_total,
             'count_invoices': count_invoices,
-            'avg_invoices': avg_invoices
+            'avg_invoices': avg_invoices,
+            'min_invoice': min_invoice,
+            'max_invoice': max_invoice
         })

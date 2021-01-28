@@ -40,7 +40,11 @@
             <select class="form-select" id="{{ form.company.id_for_label }}" name="{{ form.company.name }}">
                 <option value="">...</option>
                 {% for instance in form.company.field.queryset %}
-                    <option value="{{ instance.pk }}">{{ instance.name }}, National ID: {{ instance.national_id }}, Tax ID: {{ instance.tax_number }}</option>
+                    {% if instance.pk == form.company.value|add:"0" %}
+                        <option value="{{ instance.pk }}" selected="selected">{{ instance.name }}, National ID: {{ instance.national_id }}, Tax ID: {{ instance.tax_number }}</option>
+                    {% else %}
+                        <option value="{{ instance.pk }}">{{ instance.name }}, National ID: {{ instance.national_id }}, Tax ID: {{ instance.tax_number }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             {% if form.company.errors %}
@@ -61,7 +65,11 @@
             <select class="form-select" id="{{ form.city.id_for_label }}" name="{{ form.city.name }}">
                 <option value="">...</option>
                 {% for instance in form.city.field.queryset %}
-                    <option value="{{ instance.pk }}">{{ instance.post_code}} {{ instance.city }}</option>
+                    {% if instance.pk == form.city.value|add:"0" %}
+                        <option value="{{ instance.pk }}" selected="selected">{{ instance.post_code}} {{ instance.city }}</option>
+                    {% else %}
+                        <option value="{{ instance.pk }}">{{ instance.post_code}} {{ instance.city }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             {% if form.city.errors %}
@@ -154,6 +162,14 @@
                 <tr>
                     <th scope="row" class="text-start" colspan="6"><b>Average invoice grand total</b></th>
                     <td class="text-end"><b>{{ avg_invoices.avg_invoices | floatformat:2 | intcomma }}</b></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-start" colspan="6"><b>Minimum invoice grand total</b></th>
+                    <td class="text-end"><b>{{ min_invoice.min_invoice | floatformat:2 | intcomma }}</b></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-start" colspan="6"><b>Maximum invoice grand total</b></th>
+                    <td class="text-end"><b>{{ max_invoice.max_invoice | floatformat:2 | intcomma }}</b></td>
                 </tr>
             {% endif %}
         </tbody>
