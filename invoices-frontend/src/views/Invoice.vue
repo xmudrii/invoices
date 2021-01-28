@@ -31,7 +31,7 @@ export default {
     invoice: function () {
       for (let i = 0; i < this.invoices.length; i++)
         if (this.invoices[i].id === parseInt(this.$route.params.id)) {
-          this.load_invoice({id: this.invoices[i].id});
+          // this.load_invoice({id: this.invoices[i].id});
           return this.invoices[i];
         }
     }

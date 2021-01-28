@@ -31,7 +31,7 @@ export default {
     taxrate: function () {
       for (let i = 0; i < this.taxrates.length; i++)
         if (this.taxrates[i].id === parseInt(this.$route.params.id)) {
-          this.load_tax_rate({id: this.taxrates[i].id});
+          // this.load_tax_rate({id: this.taxrates[i].id});
           return this.taxrates[i];
         }
     }

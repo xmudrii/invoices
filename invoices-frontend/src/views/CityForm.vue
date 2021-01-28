@@ -31,7 +31,7 @@ export default {
     city: function () {
       for (let i = 0; i < this.cities.length; i++)
         if (this.cities[i].id === parseInt(this.$route.params.id)) {
-          this.load_city({id: this.cities[i].id});
+          // this.load_city({id: this.cities[i].id});
           return this.cities[i];
         }
     }

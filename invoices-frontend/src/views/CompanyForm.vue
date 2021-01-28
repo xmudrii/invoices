@@ -31,7 +31,7 @@ export default {
     company: function () {
       for (let i = 0; i < this.companies.length; i++)
         if (this.companies[i].id === parseInt(this.$route.params.id)) {
-          this.load_company({id: this.companies[i].id});
+          // this.load_company({id: this.companies[i].id});
           return this.companies[i];
         }
     }
