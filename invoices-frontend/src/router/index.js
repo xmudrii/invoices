@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Cookies from 'js-cookie'
 import Home from '../views/Home.vue'
 import Invoice from "@/views/Invoice";
 import InvoiceForm from "@/views/InvoiceForm";
@@ -10,6 +11,7 @@ import Cities from "@/views/Cities";
 import TaxRates from "@/views/TaxRates";
 import CityForm from "@/views/CityForm";
 import TaxRateForm from "@/views/TaxRateForm";
+import LoginForm from "@/views/LoginForm";
 
 Vue.use(VueRouter)
 
@@ -125,6 +127,11 @@ const routes = [
         next('/');
       next();
     }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginForm
   }
 ]
 
@@ -132,6 +139,14 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const authCookie = Cookies.get('authorization');
+  if (to.name !== 'Login' && (authCookie === undefined || authCookie === null))
+    next({ name: 'Login' })
+  else
+    next()
 })
 
 export default router

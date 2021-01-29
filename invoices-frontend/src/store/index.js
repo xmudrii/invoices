@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
@@ -644,8 +645,6 @@ export default new Vuex.Store({
     },
 
     login: function ({ commit }, payload) {
-      console.log(`${this._vm.$apiEndpoint}login`);
-      console.log(payload);
       fetch(`${this._vm.$apiEndpoint}login`, {
         method: 'post',
         headers: {
@@ -656,12 +655,11 @@ export default new Vuex.Store({
         if (!response.ok)
           throw response;
 
-        console.log(response);
         return response;
       }).then((resp) => {
-        // TODO: Implementation.
-        // There's a problem with CORS that might be solved by building the app and moving
-        // it to the backend.
+        if(resp.headers.get('Authorization') === undefined || resp.headers.get('Authorization') === null)
+          throw "Authorization error."
+        Cookies.set('authorization', resp.headers.get('Authorization'));
       }).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
