@@ -4,6 +4,9 @@ const db = require('../database/connect');
 const settings = require('../settings.json');
 
 function isAuthorized(req, res, next, admin) {
+    if(req.originalUrl === "/favicon.ico") {
+        return next();
+    }
     if (req.header("Authorization") === undefined ||
         req.header("Authorization") === null ||
         req.header("Authorization") === "") {

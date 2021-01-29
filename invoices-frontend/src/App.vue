@@ -5,16 +5,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   name: "App",
-  methods: {
-    ...mapActions(['load_invoices'])
-  },
-  mounted: function() {
-    this.load_invoices();
-  }
 }
 </script>
 
