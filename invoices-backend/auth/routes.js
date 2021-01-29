@@ -52,19 +52,19 @@ route.post('/login', (req, res) => {
                 res.status(500).send('authentication failed');
             } else if (rows.length === 0) {
                 res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
-                res.status(401).send('Unauthorized: incorrect username or password');
+                res.status(403).send('Unauthorized: incorrect username or password');
             } else {
                 let user = rows[0];
                 if(!user.is_active) {
                     res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
-                    res.status(401).send('Unauthorized');
+                    res.status(403).send('Unauthorized');
                 }
 
                 bcrypt.compare(req.body.password, user.password)
                     .then(result => {
                         if (result === false) {
                             res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
-                            res.status(401).send('Unauthorized: incorrect username or password');
+                            res.status(403).send('Unauthorized: incorrect username or password');
                         } else {
                             const claims = {
                                 iss: 'invoices',

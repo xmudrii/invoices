@@ -2,6 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
 const db = require('../database/connect');
+const auth = require('../auth/authorization');
 
 const invoiceitems = require('./invoiceitems')
 
@@ -32,7 +33,7 @@ const semaInsert = Joi.object().keys({
 route.use(express.json());
 
 // Lista svih racuna
-route.get('/', (req, res) => {
+route.get('/', auth.isAuthorizedUser, (req, res) => {
     let query = "SELECT `invoice`.`id`, `invoice`.`number`, `invoice`.`date` AS `date`, `invoice`.`date_from` AS `date_from`, `invoice`.`date_to` AS `date_to`, `invoice`.`company_id`, `invoice`.`remarks`, `invoice`.`created_at`, `invoice`.`updated_at`, `company`.`name` AS `company_name`, COALESCE(SUM((`invoice_item`.`count` * `invoice_item`.`price`)), 0) AS `net_price`, COALESCE(SUM((((`invoice_item`.`count` * `invoice_item`.`price`) * `sys_tax_rate`.`value`) / 100)), 0) AS `tax_total`, COALESCE((SUM((`invoice_item`.`count` * `invoice_item`.`price`)) + SUM((((`invoice_item`.`count` * `invoice_item`.`price`) * `sys_tax_rate`.`value`) / 100))), 0) AS `total` " +
         "FROM `invoice` " +
         "LEFT OUTER JOIN `invoice_item` ON (`invoice`.`id` = `invoice_item`.`invoice_id`) " +
@@ -50,7 +51,7 @@ route.get('/', (req, res) => {
 });
 
 // Prikaz pojedinacnog racuna
-route.get('/:id', (req, res) => {
+route.get('/:id', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;
@@ -77,7 +78,7 @@ route.get('/:id', (req, res) => {
 });
 
 // Kreiranje novog recuna
-route.post('/', (req, res) => {
+route.post('/', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     // Object decomposition - dohvatanje error-a
     let { error } = Joi.validate(req.body, semaInsert);
@@ -167,7 +168,7 @@ route.post('/', (req, res) => {
 });
 
 // Azuriranje racuna
-route.put('/:id', (req, res) => {
+route.put('/:id', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
@@ -220,7 +221,7 @@ route.put('/:id', (req, res) => {
 });
 
 // Brisanje racuna
-route.delete('/:id', (req, res) => {
+route.delete('/:id', auth.isAuthorizedAdmin, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;

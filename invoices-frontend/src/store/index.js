@@ -210,7 +210,13 @@ export default new Vuex.Store({
   },
   actions: {
     load_invoices: function ({ commit }) {
-      fetch(`${this._vm.$apiEndpoint}api/invoices`, { method: 'get' }).then((response) => {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}api/invoices`, {
+        method: 'get',
+        headers: {
+          'Authorization': authCookie,
+        },
+      }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -229,7 +235,13 @@ export default new Vuex.Store({
     },
 
     load_invoice_items: function ({ commit }, payload) {
-      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice.id}/items`, { method: 'get' }).then((response) => {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice.id}/items`, {
+        method: 'get',
+        headers: {
+          'Authorization': authCookie,
+        },
+      }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -248,7 +260,13 @@ export default new Vuex.Store({
     },
 
     load_companies: function ({ commit }) {
-      fetch(`${this._vm.$apiEndpoint}api/companies`, { method: 'get' }).then((response) => {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}api/companies`, {
+        method: 'get',
+        headers: {
+          'Authorization': authCookie,
+        }
+      }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -267,7 +285,13 @@ export default new Vuex.Store({
     },
 
     load_tax_rates: function ({ commit }) {
-      fetch(`${this._vm.$apiEndpoint}api/taxrates`, { method: 'get' }).then((response) => {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}api/taxrates`, {
+        method: 'get',
+        headers: {
+          'Authorization': authCookie,
+        }
+      }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -286,7 +310,13 @@ export default new Vuex.Store({
     },
 
     load_cities: function ({ commit }) {
-      fetch(`${this._vm.$apiEndpoint}api/cities`, { method: 'get' }).then((response) => {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}api/cities`, {
+        method: 'get',
+        headers: {
+          'Authorization': authCookie,
+        },
+      }).then((response) => {
         if (!response.ok)
           throw response;
 
@@ -305,10 +335,12 @@ export default new Vuex.Store({
     },
 
     new_invoice: function({ commit }, invoice) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: invoice
       }).then((response) => {
@@ -329,10 +361,12 @@ export default new Vuex.Store({
     },
 
     change_invoice: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.invoice
       }).then((response) => {
@@ -353,8 +387,12 @@ export default new Vuex.Store({
     },
 
     delete_invoice: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.id}`, {
         method: 'delete',
+        headers: {
+          'Authorization': authCookie,
+        }
       }).then((response) => {
         if (!response.ok)
           throw response;
@@ -373,10 +411,12 @@ export default new Vuex.Store({
     },
 
     new_invoice_item: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices/${payload.invoice_id}/items`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.invoice_item
       }).then((response) => {
@@ -397,10 +437,12 @@ export default new Vuex.Store({
     },
 
     change_invoice_item: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.invoice_item
       }).then((response) => {
@@ -421,8 +463,12 @@ export default new Vuex.Store({
     },
 
     delete_invoice_item: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/invoices/item/${payload.id}`, {
         method: 'delete',
+        headers: {
+          'Authorization': authCookie,
+        }
       }).then((response) => {
         if (!response.ok)
           throw response;
@@ -441,10 +487,12 @@ export default new Vuex.Store({
     },
 
     new_company: function({ commit }, company) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/companies`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: company
       }).then((response) => {
@@ -465,10 +513,12 @@ export default new Vuex.Store({
     },
 
     change_company: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, {
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.company
       }).then((response) => {
@@ -489,8 +539,12 @@ export default new Vuex.Store({
     },
 
     delete_company: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/companies/${payload.id}`, {
         method: 'delete',
+        headers: {
+          'Authorization': authCookie,
+        }
       }).then((response) => {
         if (!response.ok)
           throw response;
@@ -509,10 +563,12 @@ export default new Vuex.Store({
     },
 
     new_city: function({ commit }, city) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/cities`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: city
       }).then((response) => {
@@ -533,10 +589,12 @@ export default new Vuex.Store({
     },
 
     change_city: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, {
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.city
       }).then((response) => {
@@ -557,8 +615,12 @@ export default new Vuex.Store({
     },
 
     delete_city: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/cities/${payload.id}`, {
         method: 'delete',
+        headers: {
+          'Authorization': authCookie,
+        }
       }).then((response) => {
         if (!response.ok)
           throw response;
@@ -577,10 +639,12 @@ export default new Vuex.Store({
     },
 
     new_tax_rate: function({ commit }, taxrate) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/taxrates`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: taxrate
       }).then((response) => {
@@ -601,10 +665,12 @@ export default new Vuex.Store({
     },
 
     change_tax_rate: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, {
         method: 'put',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
         },
         body: payload.taxrate
       }).then((response) => {
@@ -625,8 +691,12 @@ export default new Vuex.Store({
     },
 
     delete_tax_rate: function({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
       fetch(`${this._vm.$apiEndpoint}api/taxrates/${payload.id}`, {
         method: 'delete',
+        headers: {
+          'Authorization': authCookie,
+        }
       }).then((response) => {
         if (!response.ok)
           throw response;
@@ -661,6 +731,30 @@ export default new Vuex.Store({
           throw "Authorization error."
         Cookies.set('authorization', resp.headers.get('Authorization'));
       }).catch((error) => {
+        if (typeof error.text === 'function')
+          error.text().then((errorMessage) => {
+            alert(errorMessage);
+          });
+        else
+          alert(error);
+      });
+    },
+
+    verify_login: function ({ commit }, payload) {
+      const authCookie = Cookies.get('authorization');
+      fetch(`${this._vm.$apiEndpoint}account`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': authCookie,
+        },
+        body: payload
+      }).then((response) => {
+        if (!response.ok)
+          throw response;
+
+        return response;
+      }).then((resp) => {}).catch((error) => {
         if (typeof error.text === 'function')
           error.text().then((errorMessage) => {
             alert(errorMessage);

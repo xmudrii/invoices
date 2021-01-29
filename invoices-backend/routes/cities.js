@@ -2,6 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
 const db = require('../database/connect');
+const auth = require('../auth/authorization');
 
 // Instanciranje rutera
 const route = express.Router();
@@ -17,7 +18,7 @@ const sema = Joi.object().keys({
 route.use(express.json());
 
 // Lista svih gradova
-route.get('/', (req, res) => {
+route.get('/', auth.isAuthorizedUser, (req, res) => {
     db.query('select * from sys_city', (err, rows) => {
         if (err)
             // Greska servera
@@ -28,7 +29,7 @@ route.get('/', (req, res) => {
 });
 
 // Prikaz pojedinacnog grada
-route.get('/:id', (req, res) => {
+route.get('/:id', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;
@@ -49,7 +50,7 @@ route.get('/:id', (req, res) => {
 });
 
 // Kreiranje novog grada
-route.post('/', (req, res) => {
+route.post('/', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     // Object decomposition - dohvatanje error-a
     let { error } = Joi.validate(req.body, sema);
@@ -86,7 +87,7 @@ route.post('/', (req, res) => {
 });
 
 // Azuriranje grada
-route.put('/:id', (req, res) => {
+route.put('/:id', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
@@ -130,7 +131,7 @@ route.put('/:id', (req, res) => {
 });
 
 // Brisanje grada
-route.delete('/:id', (req, res) => {
+route.delete('/:id', auth.isAuthorizedAdmin, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;

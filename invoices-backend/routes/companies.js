@@ -2,6 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
 const db = require('../database/connect');
+const auth = require('../auth/authorization');
 
 // Instanciranje rutera
 const route = express.Router();
@@ -32,7 +33,7 @@ const semaInsert = Joi.object().keys({
 route.use(express.json());
 
 // Lista svih komintenata
-route.get('/', (req, res) => {
+route.get('/', auth.isAuthorizedUser, (req, res) => {
     let query = 'SELECT `company`.*, `sys_city`.`city` AS `city`, `sys_city`.`post_code` AS `post_code` ' +
         'FROM `company` ' +
         'INNER JOIN `sys_city` ON `company`.`city_id` = `sys_city`.`id`;'
@@ -46,7 +47,7 @@ route.get('/', (req, res) => {
 });
 
 // Prikaz pojedinacnog komintenta
-route.get('/:id', (req, res) => {
+route.get('/:id', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;
@@ -70,7 +71,7 @@ route.get('/:id', (req, res) => {
 });
 
 // Kreiranje novog komintenta
-route.post('/', (req, res) => {
+route.post('/', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     // Object decomposition - dohvatanje error-a
     let { error } = Joi.validate(req.body, semaInsert);
@@ -156,7 +157,7 @@ route.post('/', (req, res) => {
 });
 
 // Azuriranje komintenta
-route.put('/:id', (req, res) => {
+route.put('/:id', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
@@ -207,7 +208,7 @@ route.put('/:id', (req, res) => {
 });
 
 // Brisanje komintenta
-route.delete('/:id', (req, res) => {
+route.delete('/:id', auth.isAuthorizedAdmin, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;

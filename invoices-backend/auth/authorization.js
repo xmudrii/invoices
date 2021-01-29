@@ -7,14 +7,14 @@ function isAuthorized(req, res, next, admin) {
     if (req.header("Authorization") === undefined ||
         req.header("Authorization") === null ||
         req.header("Authorization") === "") {
-        res.status(401);
+        res.status(403);
         res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
         return next('Unauthorized: authorization header not present');
     }
 
     const token = req.header("Authorization").split("Basic ");
     if (token.length !== 2) {
-        res.status(401);
+        res.status(403);
         res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
         return next('Unauthorized: failed to parse header');
     }
@@ -23,7 +23,7 @@ function isAuthorized(req, res, next, admin) {
         if (err) {
             console.log("auth failed: " + err);
 
-            res.status(401);
+            res.status(403);
             res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
             return next('Unauthorized: failed to parse header');
         } else {
@@ -36,17 +36,17 @@ function isAuthorized(req, res, next, admin) {
                 if (err) {
                     console.log("auth failed: " + err.sqlMessage);
 
-                    res.status(401);
+                    res.status(403);
                     res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
                     return next('Unauthorized');
                 } else if (rows.length === 0) {
-                    res.status(401);
+                    res.status(403);
                     res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
                     return next('Unauthorized');
                 } else {
                     let user = rows[0];
                     if (!user.is_active) {
-                        res.status(401);
+                        res.status(403);
                         res.set("WWW-Authenticate", 'Basic realm="Access to invoices requires login"');
                         return next('Unauthorized');
                     }

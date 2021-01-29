@@ -2,6 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
 const db = require('../database/connect');
+const auth = require('../auth/authorization');
 
 // Instanciranje rutera
 const route = express.Router();
@@ -20,7 +21,7 @@ const sema = Joi.object().keys({
 route.use(express.json());
 
 // Lista svih stavki za racun
-route.get('/:invoice/items', (req, res) => {
+route.get('/:invoice/items', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.invoice)) {
         res.status(400).send('id must be a number');
         return;
@@ -58,7 +59,7 @@ route.get('/:invoice/items', (req, res) => {
 });
 
 // Kreiranje nove stavke za racun
-route.post('/:invoice/items', (req, res) => {
+route.post('/:invoice/items', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     if(isNaN(req.params.invoice)) {
         res.status(400).send('id must be a number');
@@ -109,7 +110,7 @@ route.post('/:invoice/items', (req, res) => {
 });
 
 // Pojedinacna stavka
-route.get('/item/:id', (req, res) => {
+route.get('/item/:id', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;
@@ -137,7 +138,7 @@ route.get('/item/:id', (req, res) => {
 });
 
 // Azuriranje stavke
-route.put('/item/:id', (req, res) => {
+route.put('/item/:id', auth.isAuthorizedUser, (req, res) => {
     // Validacija unosa
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
@@ -190,7 +191,7 @@ route.put('/item/:id', (req, res) => {
 });
 
 // Brisanje stavke
-route.delete('/item/:id', (req, res) => {
+route.delete('/item/:id', auth.isAuthorizedUser, (req, res) => {
     if(isNaN(req.params.id)) {
         res.status(400).send('id must be a number');
         return;

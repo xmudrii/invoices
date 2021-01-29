@@ -23,6 +23,8 @@
           <b-dropdown-item to="/taxrates">Preview and edit tax rates</b-dropdown-item>
           <b-dropdown-item to="/taxrate/new">New tax rate</b-dropdown-item>
         </b-nav-item-dropdown>
+
+        <b-nav-item to="/logout" right>Logout</b-nav-item>
       </b-navbar-nav>
     </b-navbar>
     <div class="mt-5"></div>
